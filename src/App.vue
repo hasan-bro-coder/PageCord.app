@@ -42,7 +42,9 @@ export default {
 </template>
 
 <style>
-
+ :root{
+  --bg-color: #313338;
+ }
 	@font-face {
       font-family: 'gg sans';
       font-style: normal;
@@ -106,7 +108,7 @@ export default {
       /* display: flex; */
       /* justify-content: center; */
       /* align-items: center; */
-      /* display: none; */
+      display: none;
       opacity: 0;
       flex-grow: 1;
     }
@@ -130,12 +132,11 @@ export default {
       justify-content: center;
       align-items: center;
     }
-    .setting:hover .btn{
-      /* position: absolute; */
-      /* display: inline; */
+    /* .setting:hover .btn{
+
       transition: 1s;
       opacity: 1;
-    }
+    } */
 /*
 	body {
   height: 100vh;

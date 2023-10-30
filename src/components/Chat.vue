@@ -9,12 +9,12 @@
     <a @click="image" class="position-fixed" style="right: 10px;left: auto"><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512" style="height: 25px;width: 25px;fill:aliceblue"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M448 80c8.8 0 16 7.2 16 16V415.8l-5-6.5-136-176c-4.5-5.9-11.6-9.3-19-9.3s-14.4 3.4-19 9.3L202 340.7l-30.5-42.7C167 291.7 159.8 288 152 288s-15 3.7-19.5 10.1l-80 112L48 416.3l0-.3V96c0-8.8 7.2-16 16-16H448zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/></svg></a>
     </div>
     <ul class="list-group list-group-flush" style="padding-top: 100px;">
-      <div data-aos="fade-in" class="list-group-item bg-dark text-light massage d-flex align-items-center gap-5" v-for="c in chat">
+      <div data-aos="fade-in" class="list-group-item bg-dark text-light massage d-flex align-items-center gap-5" v-for="c in chat" :id="c.id">
         <li style="height: max-content !important;overflow: auto !important;white-space: pre-warp" v-html="(c.img ? `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>`+c.massage : `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>`+$sanitize(mas(c.massage || '*empty massage*')))"></li>
-        <div class="setting position-absolute" v-if="c.user == you.name">
-        <button class="btn btn-outline-danger " style="height: min-content; width: 10px !important;" @click="!c.img ? delet(c.id) : img_delet(c.id)">delate</button>
-        <button class="btn btn-outline-success " style="height: min-content; width: 10px !important;" v-if="!c.img" @click="updat(c.id,c.massage)">update</button>
-        <div>::</div></div>
+        <div @click="shows(c.id,c.created_at)" class="setting position-absolute" v-if="c.user == you.name">
+        <button class="btn btn-outline-danger" style=" min-width: 60px !important;" @click="!c.img ? delet(c.id) : img_delet(c.id)">delate</button>
+        <button class="btn btn-outline-success" style=" min-width: 60px !important;" v-if="!c.img" @click="updat(c.id,c.massage)">update</button>
+        <div style="color: gray;" id="texts" >{{ c.created_at.split("T")[1].split(":")[0] + ":"+ c.created_at.split("T")[1].split(":")[1]+ " " +c.created_at.split("T")[0].split("-")[2]+"/" +c.created_at.split("T")[0].split("-")[1]  }}</div></div>
       </div>
     </ul>
     <!-- <input id="input" autocomplete="off" /><button>Send</button> -->
@@ -70,6 +70,26 @@ export default {
     Sidebar,
   },
   methods:{
+    shows(id,created_at){
+      // let main = document.querySelector("#"+id)
+      // let setting = document.querySelector(`div#${id}`)
+      let target = document.getElementById(id).querySelector(`#texts`)
+      console.log(target);
+      let setting = document.getElementById(id).querySelectorAll(".btn")
+      setting.forEach((el)=>{
+        if (el.style.display == "inline") {
+          el.style.opacity = "0"
+          el.style.display = "none"
+          target.innerText = created_at.split("T")[1].split(":")[0] + ":"+ created_at.split("T")[1].split(":")[1]+ " " +created_at.split("T")[0].split("-")[2]+"/" +created_at.split("T")[0].split("-")[1]
+        }
+        else{
+          el.style.display = "inline"
+          el.style.opacity = "1"
+          target.innerText ='::'
+        }
+      })
+      console.log(setting);
+    },
     mas(msg){
       return marked.parse(msg);
     },
@@ -80,6 +100,7 @@ export default {
     .delete()
     .eq('id', id)
     socket.emit("reload",this.room)
+    this.imag = !this.imag
     this.ins()
     },
     async image(){
@@ -99,6 +120,7 @@ export default {
               user : el.user,
               img: true,
               id : el.id,
+              created_at: el.created_at,
               massage: `<img loading="lazy" style="max-width: 70vw" src="${"data:" + el.type + ";base64," + el.massage}">` 
             }
              this.chat.push(els)
@@ -122,7 +144,7 @@ export default {
       
       const { data, error } = await supabase
       .from('chat')
-      .update({ massage: datas })
+      .update({ massage: datas || defaults })
       .eq('id', id)
       .select()
       socket.emit("reload",this.room)
@@ -142,7 +164,7 @@ export default {
          // let chat = JSON.parse(data[0].chat);
          data.reverse().forEach((el) => {
           //  let messages = document.querySelector("ul");
-          //  console.log(el.massage);
+          //  console.log(el.massage);al
            // messages.innerHTML +=
            this.chat.push(el
              // `<li data-aos="fade-in" class="list-group-item bg-dark text-light massage" style="height: max-content !important;overflow: auto !important;white-space: pre-warp">${el.massage}<button class="btn btn-outline-danger" id="${el.id}" @click="delet">delet</button></li>`
@@ -323,15 +345,18 @@ export default {
           .select();
     }
     async function addImage(msg,name,type,size){
+      let { v4 } = await import("uuid")
+      let uid = v4()
       let {data , error}  = await supabase
           .from("media")
-          .insert({ massage: msg ,room_name: room,user:you.name,type: type,size: size,name})
+          .insert({ massage: msg ,room_name: room,user:you.name,type: type,size: size,name: name,uuid: uid})
           .eq("room_name", room)
           .select();
           if (error) {
-            alert("there is an error")
+            alert("there is an error "+error.message);
           }
           console.log(error);
+          add("<a id='"+uid+"'>send an image named: "+uid+"</a>",false)
     }
     window.addEventListener("keypress", (e) => {
       if (e.key == "Enter" && !e.shiftKey) {
@@ -458,7 +483,7 @@ export default {
 <style scoped>
 * {
   cursor: url("../assets/cursor3.png"), alias;
-  scrollbar-color: #30363b #000000;
+  scrollbar-color: var(--bg-color) #000000;
   scrollbar-width: thin;
   scroll-behavior: smooth;
 }
@@ -469,14 +494,14 @@ html {
 
 body {
   cursor: url("../assets/cursor3.png"), alias;
-  background-color: #313338;
+  background-color: var(--bg-color);
   overflow-x: hidden;
 }
 
 div.body {
   overflow-x: hidden;
   cursor: url("../assets/cursor3.png"), alias;
-  background-color: #313338;
+  background-color: var(--bg-color);
   min-height: 100vh;
   padding-left: clamp(20px, 6vw, 25px) !important;
   padding-right: clamp(20px, 6vw, 25px) !important;
@@ -523,7 +548,7 @@ div.body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #30363b;
+  background: var(--bg-color);
   border-radius: 10px;
 }
 
@@ -610,7 +635,7 @@ ul li {
 .plus {
   /* border: white 1px solid ; */
   /* border-right: none !important; */
-  background-color: #3c4349 !important;
+  background-color: var(--bg-color) !important;
 
   /* border-bottom-right-radius: 10px !important; */
   /* border-top-right-radius: 10px !important; */
@@ -636,7 +661,7 @@ textarea {
   font-size: 15px !important;
   height: 38px;
   transition: 1s;
-  background-color: #3c4349 !important;
+  background-color: var(--bg-color) !important;
   color: white !important;
   scrollbar-color: #00000000 #00000000;
   scrollbar-width: thin;

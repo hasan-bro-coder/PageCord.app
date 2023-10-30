@@ -136,10 +136,11 @@ export default {
          .select("*")
          .eq("room_name", this.room)
          .eq("media", false)
-         .order('id', { ascending: true });
+         .limit(200)
+         .order('id', { ascending: false });
        if (!error && data.length > 0) {
          // let chat = JSON.parse(data[0].chat);
-         data.forEach((el) => {
+         data.reverse().forEach((el) => {
           //  let messages = document.querySelector("ul");
           //  console.log(el.massage);
            // messages.innerHTML +=

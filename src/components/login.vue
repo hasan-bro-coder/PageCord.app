@@ -20,9 +20,8 @@
 </template>
 
 <script>
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient( 'https://fvofzvyfqveudmkkbdqn.supabase.co', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2b2Z6dnlmcXZldWRta2tiZHFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NDcxODUsImV4cCI6MjAxMDQyMzE4NX0.CW5FbiNWTLDwdpw_ojtUWH5DHGOTBmZJZzhDqYRLpLA");
+import { store } from '../store';
+const supabase = store.supabase
 export default { 
  data() {
     return {

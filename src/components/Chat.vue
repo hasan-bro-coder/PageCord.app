@@ -1,6 +1,6 @@
 <template class="bg-dark text-light pb-5">
-  <div v-if="!not" class="bg-dark text-light pb-5 body">
-    <Sidebar :room="room"></Sidebar>
+  <div v-if="!not" class="bg-dark text-light pb-5 body" >
+    <!-- <Sidebar :room="room"></Sidebar> -->
     <div class="text-center position-fixed " style="background-color: #21252921; width:70vw;z-index: 100;top: -6px;left:50%;transform: translateX(-50%);display: flex;justify-content: center;align-items: center;">
       <div>
     <h1 class="text-center" >Page-cord</h1>
@@ -8,13 +8,13 @@
     </div>
     <a @click="image" class="position-fixed" style="right: 10px;left: auto"><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512" style="height: 25px;width: 25px;fill:aliceblue"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M448 80c8.8 0 16 7.2 16 16V415.8l-5-6.5-136-176c-4.5-5.9-11.6-9.3-19-9.3s-14.4 3.4-19 9.3L202 340.7l-30.5-42.7C167 291.7 159.8 288 152 288s-15 3.7-19.5 10.1l-80 112L48 416.3l0-.3V96c0-8.8 7.2-16 16-16H448zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/></svg></a>
     </div>
-    <ul class="list-group list-group-flush" style="padding-top: 100px;">
-      <div data-aos="fade-in" class="list-group-item bg-dark text-light massage d-flex align-items-center gap-5" v-for="c in chat" :id="c.id">
+    <ul class="list-group list-group-flush" style="padding-top: 100px;" >
+      <div @click.self="hides('none',c.created_at)" data-aos="fade-in" class="list-group-item bg-dark text-light massage d-flex align-items-center gap-5" v-for="c in chat" :id="c.id">
         <li style="height: max-content !important;overflow: auto !important;white-space: pre-warp" v-html="(c.img ? `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>`+c.massage : `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>`+$sanitize(mas(c.massage || '*empty massage*')))"></li>
         <div @click="shows(c.id,c.created_at)" class="setting position-absolute" v-if="c.user == you.name">
         <button class="btn btn-outline-danger" style=" min-width: 60px !important;" @click="!c.img ? delet(c.id) : img_delet(c.id)">delate</button>
         <button class="btn btn-outline-success" style=" min-width: 60px !important;" v-if="!c.img" @click="updat(c.id,c.massage)">update</button>
-        <div style="color: gray;" id="texts" >{{ c.created_at.split("T")[1].split(":")[0] + ":"+ c.created_at.split("T")[1].split(":")[1]+ " " +c.created_at.split("T")[0].split("-")[2]+"/" +c.created_at.split("T")[0].split("-")[1]  }}</div></div>
+        <div style="color: gray;" id="texts" :class="c.created_at" >{{ c.created_at.split("T")[1].split(":")[0] + ":"+ c.created_at.split("T")[1].split(":")[1]+ " " +c.created_at.split("T")[0].split("-")[2]+"/" +c.created_at.split("T")[0].split("-")[1]  }}</div></div>
       </div>
     </ul>
     <!-- <input id="input" autocomplete="off" /><button>Send</button> -->
@@ -42,13 +42,16 @@
 <script>
 import Sidebar from "./other/sidebar.vue";
 import { io } from "socket.io-client";
-import { createClient } from "@supabase/supabase-js";
+import {store} from '../store'
+
+const supabase = store.supabase
+// import { createClient } from "@supabase/supabase-js";
 import { marked } from "marked";
 const socket = io("https://page-cord.hsn-bro.repl.co");
-const supabase = createClient(
-  "https://fvofzvyfqveudmkkbdqn.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2b2Z6dnlmcXZldWRta2tiZHFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NDcxODUsImV4cCI6MjAxMDQyMzE4NX0.CW5FbiNWTLDwdpw_ojtUWH5DHGOTBmZJZzhDqYRLpLA"
-  );
+// const supabase = createClient(
+//   "https://fvofzvyfqveudmkkbdqn.supabase.co",
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2b2Z6dnlmcXZldWRta2tiZHFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NDcxODUsImV4cCI6MjAxMDQyMzE4NX0.CW5FbiNWTLDwdpw_ojtUWH5DHGOTBmZJZzhDqYRLpLA"
+//   );
   let you = {
     name: localStorage.getItem("dname") || "unknown",
     id: 0,
@@ -64,6 +67,8 @@ export default {
       chat:[],
       you: you,
       imag: false,
+      currid:0,
+      setted:false,
     };
   },
   components: {
@@ -71,30 +76,76 @@ export default {
   },
   methods:{
     shows(id,created_at){
-      // let main = document.querySelector("#"+id)
-      // let setting = document.querySelector(`div#${id}`)
-      let target = document.getElementById(id).querySelector(`#texts`)
-      console.log(target);
-      let setting = document.getElementById(id).querySelectorAll(".btn")
-      setting.forEach((el)=>{
-        if (el.style.display == "inline") {
-          el.style.opacity = "0"
-          el.style.display = "none"
-          target.innerText = created_at.split("T")[1].split(":")[0] + ":"+ created_at.split("T")[1].split(":")[1]+ " " +created_at.split("T")[0].split("-")[2]+"/" +created_at.split("T")[0].split("-")[1]
-        }
-        else{
+      if (!this.setted) {
+      document.getElementById(id).querySelectorAll(".btn").forEach((el)=>{
           el.style.display = "inline"
           el.style.opacity = "1"
-          target.innerText ='::'
-        }
+          document.getElementById(id).querySelector(`#texts`).innerText ='::'
       })
-      console.log(setting);
+      this.currid = id
+      this.setted = true
+    }else{
+        document.getElementById(this.currid).querySelectorAll(".btn").forEach((el)=>{
+          if (el.style.display == "inline") {
+            el.style.opacity = "0"
+            el.style.display = "none"
+            document.getElementById(this.currid).querySelector(`#texts`).innerText = created_at.split("T")[1].split(":")[0] + ":"+ created_at.split("T")[1].split(":")[1]+ " " +created_at.split("T")[0].split("-")[2]+"/" +created_at.split("T")[0].split("-")[1]
+           }
+        })
+      this.setted = false
+      }
+    },
+    hides(id,created_at){
+      
+        if (id != "none") {
+            this.currid = id
+        }
+       if (this.currid == 0) {
+        return 0
+       }
+        document.getElementById(this.currid).querySelectorAll(".btn").forEach((el)=>{
+          if (el.style.display == "inline") {
+            el.style.opacity = "0"
+            el.style.display = "none"
+            document.getElementById(this.currid).querySelector(`#texts`).innerText = created_at.split("T")[1].split(":")[0] + ":"+ created_at.split("T")[1].split(":")[1]+ " " +created_at.split("T")[0].split("-")[2]+"/" +created_at.split("T")[0].split("-")[1]
+           }
+        })
+      this.setted = false
+      
+    
+
+      //   // let setting = document.querySelector(`div#${id}`)
+      //   let mode = true
+      //     mode = false
+      //   else id = this.currid;
+      //   // let main = document.querySelector("#"+id)
+    //   let target = 
+    //   if (created_at == "none") {
+    //     created_at = target.className
+    //   }
+    //   console.log(target);
+    //   if (mode) {   
+    //   setting
+    //     else{
+    //       el.style.display = "inline"
+    //       el.style.opacity = "1"
+    //       target.innerText ='::'
+    //     }
+    //   })
+    //   console.log(setting);
+    // }else{
+    //   setting.forEach((el)=>{
+    //       el.style.opacity = "0"
+    //       el.style.display = "none"
+    //       target.innerText = created_at.split("T")[1].split(":")[0] + ":"+ created_at.split("T")[1].split(":")[1]+ " " +created_at.split("T")[0].split("-")[2]+"/" +created_at.split("T")[0].split("-")[1]
+    //   })
+    //   console.log(setting);
+    // }
     },
     mas(msg){
       return marked.parse(msg);
     },
     async img_delet(id){
-      console.log("img delete");
       const { error } = await supabase
     .from('media')
     .delete()
@@ -105,9 +156,7 @@ export default {
     },
     async image(){
       this.imag = !this.imag
-      console.log(this.imag);
       if(this.imag){
-        console.log("ins image");
         this.chat = [];
          let { data, error } = await supabase
            .from("media")
@@ -131,7 +180,6 @@ export default {
       }
     },
     async delet(id){
-      console.log("img not delet");
     const { error } = await supabase
     .from('chat')
     .delete()
@@ -151,7 +199,6 @@ export default {
       this.ins()
     },
     async ins(){
-      console.log("ins");
       this.chat = [];
        let { data, error } = await supabase
          .from("chat")
@@ -210,7 +257,6 @@ export default {
     .from("bros")
     .select("*")
     .eq("name", localStorage.getItem("name"));
-    console.log(data[0].pagees);
     if (!JSON.parse(data[0].pagees).includes(room)) {
       this.not = true;
       this.nottext =
@@ -219,6 +265,8 @@ export default {
     socket.on("connect", () => {
       socket.emit("join", room);
       socket.emit("adduser", you.name, room);
+      console.clear()
+      console.log("connected");
       // socket.emit('message', `<p>` + you.name + " :" + "</p>" + " joined the room", room);
       socket.on("type", (name)=>{
         that.is_typing = true
@@ -229,7 +277,7 @@ export default {
         // that.typer = name;
       })
       socket.on("message", function (msg, main) {
-        console.log(msg);
+        // console.log(msg);
         let messages = document.querySelector("ul");
         // that.chat.push(msg)
         
@@ -257,9 +305,7 @@ export default {
         reload_users(peoples);
       });
       socket.on("reload", (room) => {
-        console.log("reload started",room);
         that.ins()
-        console.log("reload started no" ,room);
       });
       socket.on("no-user", (name) => {
         peoples.delete(name);
@@ -355,7 +401,6 @@ export default {
           if (error) {
             alert("there is an error "+error.message);
           }
-          console.log(error);
           add("<a id='"+uid+"'>send an image named: "+uid+"</a>",false)
     }
     window.addEventListener("keypress", (e) => {

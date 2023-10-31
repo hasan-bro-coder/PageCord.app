@@ -105,13 +105,14 @@
   </div>
 </template>
 <script lang="js">
-import Pwa from './other/pwa.vue'
-import { createClient } from '@supabase/supabase-js'
+// import { createClient } from '@supabase/supabase-js'
 import AOS from 'aos';
 import 'aos/dist/aos.css'
 import 'bootstrap/dist/css/bootstrap.css';
+import { store } from '../store';
 // import { v4 as uuidv4 } from 'uuid';
-const supabase = createClient('https://fvofzvyfqveudmkkbdqn.supabase.co', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2b2Z6dnlmcXZldWRta2tiZHFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NDcxODUsImV4cCI6MjAxMDQyMzE4NX0.CW5FbiNWTLDwdpw_ojtUWH5DHGOTBmZJZzhDqYRLpLA")
+const supabase = store.supabase
+// createClient('https://fvofzvyfqveudmkkbdqn.supabase.co', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2b2Z6dnlmcXZldWRta2tiZHFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NDcxODUsImV4cCI6MjAxMDQyMzE4NX0.CW5FbiNWTLDwdpw_ojtUWH5DHGOTBmZJZzhDqYRLpLA")
 
 export default {
   data: () => ({
@@ -210,9 +211,7 @@ export default {
       })
     },
   },
-  components: {
-    Pwa,
-  },
+
   async mounted() {
     // localStorage.setItem('pages', JSON.stringify(['1','2','3']))
     // async function parse(){

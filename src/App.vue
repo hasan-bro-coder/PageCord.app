@@ -7,12 +7,16 @@
 //   '/': Home,
 //   '/about': Chat
 // }
+import Sidebar from "./components/other/sidebar.vue";
 
 export default {
   data() {
     return {
-      currentPath: window.location.hash
+      room: ""
     }
+  },
+  components: {
+    Sidebar,
   },
   computed: {
     isOnline(){
@@ -23,12 +27,15 @@ export default {
     // }
   },
   mounted() {
+    let room = window.location.pathname == "/" ? "nah" : window.location.pathname.replace("/", "");
+    this.room = room;
    
   }
 }
 </script>
 
 <template>
+  <Sidebar v-if="room!='nah'" :room="room"></Sidebar>
 	<router-view v-if="isOnline"></router-view>
   <div v-else class="text-light bg-dark h-100 w-100">
     bro your offline

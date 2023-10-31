@@ -6,7 +6,6 @@ import Vue3Sanitize from "vue-3-sanitize";
 
 let app = createApp(App)
 app.use(router)
-console.log("default",Vue3Sanitize.defaults);
 app.use(Vue3Sanitize,{
   allowedTags:[
     "address",

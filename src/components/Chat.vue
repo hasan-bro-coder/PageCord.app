@@ -17,7 +17,6 @@
         <div style="color: gray;" id="texts" :class="c.created_at" >{{ c.created_at.split("T")[1].split(":")[0] + ":"+ c.created_at.split("T")[1].split(":")[1]+ " " +c.created_at.split("T")[0].split("-")[2]+"/" +c.created_at.split("T")[0].split("-")[1]  }}</div></div>
       </div>
     </ul>
-    <!-- <input id="input" autocomplete="off" /><button>Send</button> -->
     <form id="form" class="w-100 z-3 d-flex position-fixed" action="">
       <h6 v-if="is_typing" v-text="typer + ' is typing'" style="margin: -20px 0px 0px calc(50% - 50px);" class="position-fixed z-1"></h6>
       <div class="input-group mb-1">
@@ -38,24 +37,17 @@
     <a href="/" class="btn btn-outline-light">go back</a>
   </div>
 </template>
-
 <script>
 import Sidebar from "./other/sidebar.vue";
 import { io } from "socket.io-client";
 import {store} from '../store'
 
 const supabase = store.supabase
-// import { createClient } from "@supabase/supabase-js";
 import { marked } from "marked";
-const socket = io("https://page-cord.hsn-bro.repl.co");
-// const supabase = createClient(
-//   "https://fvofzvyfqveudmkkbdqn.supabase.co",
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2b2Z6dnlmcXZldWRta2tiZHFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NDcxODUsImV4cCI6MjAxMDQyMzE4NX0.CW5FbiNWTLDwdpw_ojtUWH5DHGOTBmZJZzhDqYRLpLA"
-//   );
-  let you = {
-    name: localStorage.getItem("dname") || "unknown",
-    id: 0,
-  };
+let you = {
+  name: localStorage.getItem("dname") || "unknown",
+  id: 0,
+};
 export default {
   data() {
     return {
@@ -77,94 +69,64 @@ export default {
   methods:{
     shows(id,created_at){
       if (!this.setted) {
-      document.getElementById(id).querySelectorAll(".btn").forEach((el)=>{
+        document.getElementById(id).querySelectorAll(".btn").forEach((el)=>{
           el.style.display = "inline"
           el.style.opacity = "1"
           document.getElementById(id).querySelector(`#texts`).innerText ='::'
-      })
-      this.currid = id
-      this.setted = true
-    }else{
+        })
+        this.currid = id
+        this.setted = true
+      }else{
         document.getElementById(this.currid).querySelectorAll(".btn").forEach((el)=>{
           if (el.style.display == "inline") {
             el.style.opacity = "0"
             el.style.display = "none"
             document.getElementById(this.currid).querySelector(`#texts`).innerText = created_at.split("T")[1].split(":")[0] + ":"+ created_at.split("T")[1].split(":")[1]+ " " +created_at.split("T")[0].split("-")[2]+"/" +created_at.split("T")[0].split("-")[1]
-           }
+          }
         })
       this.setted = false
-      }
-    },
-    hides(id,created_at){
-      
-        if (id != "none") {
-            this.currid = id
-        }
-       if (this.currid == 0) {
-        return 0
-       }
-        document.getElementById(this.currid).querySelectorAll(".btn").forEach((el)=>{
-          if (el.style.display == "inline") {
-            el.style.opacity = "0"
-            el.style.display = "none"
-            document.getElementById(this.currid).querySelector(`#texts`).innerText = created_at.split("T")[1].split(":")[0] + ":"+ created_at.split("T")[1].split(":")[1]+ " " +created_at.split("T")[0].split("-")[2]+"/" +created_at.split("T")[0].split("-")[1]
-           }
-        })
-      this.setted = false
-      
+    }
+  },
+  hides(id,created_at){
     
-
-      //   // let setting = document.querySelector(`div#${id}`)
-      //   let mode = true
-      //     mode = false
-      //   else id = this.currid;
-      //   // let main = document.querySelector("#"+id)
-    //   let target = 
-    //   if (created_at == "none") {
-    //     created_at = target.className
-    //   }
-    //   console.log(target);
-    //   if (mode) {   
-    //   setting
-    //     else{
-    //       el.style.display = "inline"
-    //       el.style.opacity = "1"
-    //       target.innerText ='::'
-    //     }
-    //   })
-    //   console.log(setting);
-    // }else{
-    //   setting.forEach((el)=>{
-    //       el.style.opacity = "0"
-    //       el.style.display = "none"
-    //       target.innerText = created_at.split("T")[1].split(":")[0] + ":"+ created_at.split("T")[1].split(":")[1]+ " " +created_at.split("T")[0].split("-")[2]+"/" +created_at.split("T")[0].split("-")[1]
-    //   })
-    //   console.log(setting);
-    // }
-    },
-    mas(msg){
-      return marked.parse(msg);
-    },
-    async img_delet(id){
-      const { error } = await supabase
+    if (id != "none") {
+      this.currid = id
+    }
+    if (this.currid == 0) {
+      return 0
+    }
+    document.getElementById(this.currid).querySelectorAll(".btn").forEach((el)=>{
+      if (el.style.display == "inline") {
+        el.style.opacity = "0"
+        el.style.display = "none"
+        document.getElementById(this.currid).querySelector(`#texts`).innerText = created_at.split("T")[1].split(":")[0] + ":"+ created_at.split("T")[1].split(":")[1]+ " " +created_at.split("T")[0].split("-")[2]+"/" +created_at.split("T")[0].split("-")[1]
+      }
+    })
+    this.setted = false
+  },
+  mas(msg){
+    return marked.parse(msg);
+  },
+  async img_delet(id){
+    const { error } = await supabase
     .from('media')
     .delete()
     .eq('id', id)
     socket.emit("reload",this.room)
     this.imag = !this.imag
     this.ins()
-    },
+  },
     async image(){
       this.imag = !this.imag
       if(this.imag){
         this.chat = [];
-         let { data, error } = await supabase
-           .from("media")
-           .select("*")
-           .eq("room_name", this.room)
-           .order('id', { ascending: true });
-         if (!error && data.length > 0) {
-           data.forEach((el) => {
+        let { data, error } = await supabase
+        .from("media")
+        .select("*")
+        .eq("room_name", this.room)
+        .order('id', { ascending: true });
+        if (!error && data.length > 0) {
+          data.forEach((el) => {
             let els = {
               user : el.user,
               img: true,
@@ -172,21 +134,21 @@ export default {
               created_at: el.created_at,
               massage: `<img loading="lazy" style="max-width: 70vw" src="${"data:" + el.type + ";base64," + el.massage}">` 
             }
-             this.chat.push(els)
-           })
-          }else this.chat.push({massage:"<p>THERES NO IMAGES OR VIDEOS BRO</p>"})
+            this.chat.push(els)
+          })
+        }else this.chat.push({massage:"<p>THERES NO IMAGES OR VIDEOS BRO</p>"})
       }else{
         this.ins()
       }
     },
     async delet(id){
-    const { error } = await supabase
-    .from('chat')
-    .delete()
-    .eq('id', id)
-    socket.emit("reload",this.room)
-    this.ins()
-      },
+      const { error } = await supabase
+      .from('chat')
+      .delete()
+      .eq('id', id)
+      socket.emit("reload",this.room)
+      this.ins()
+    },
     async updat(id,defaults){
       let datas = prompt("type:",defaults)
       
@@ -200,69 +162,81 @@ export default {
     },
     async ins(){
       this.chat = [];
-       let { data, error } = await supabase
-         .from("chat")
-         .select("*")
-         .eq("room_name", this.room)
-         .eq("media", false)
-         .limit(200)
-         .order('id', { ascending: false });
-       if (!error && data.length > 0) {
-         // let chat = JSON.parse(data[0].chat);
-         data.reverse().forEach((el) => {
+      let { data, error } = await supabase
+      .from("chat")
+      .select("*")
+      .eq("room_name", this.room)
+      .eq("media", false)
+      .limit(200)
+      .order('id', { ascending: false });
+      if (!error && data.length > 0) {
+        // let chat = JSON.parse(data[0].chat);
+        data.reverse().forEach((el) => {
           //  let messages = document.querySelector("ul");
           //  console.log(el.massage);al
-           // messages.innerHTML +=
-           this.chat.push(el
-             // `<li data-aos="fade-in" class="list-group-item bg-dark text-light massage" style="height: max-content !important;overflow: auto !important;white-space: pre-warp">${el.massage}<button class="btn btn-outline-danger" id="${el.id}" @click="delet">delet</button></li>`
-           )
-           window.scrollTo(0, document.body.scrollHeight + 2);
-           window.scrollTo(0, document.body.scrollHeight + 2);
-           window.scrollTo(0, document.body.scrollHeight + 2);
-           window.scrollTo(0, document.body.scrollHeight + 2);
-           window.scrollTo(0, document.body.scrollHeight + 2);
-         });
-       } else {
-         this.not = true;
-         this.nottext = "page dosnt exists bro (404)";
-         //     const { data, error } = await supabase
-         // .from('chats')
-         // .insert([
-         //   { name: room, chat:"[]" },
-         // ])
-         // .select()
-         // this.notfound = true
-       }
-     },
-  },
-  updated(){
-    window.scrollTo(0, document.body.scrollHeight + 2);
-    window.scrollTo(0, document.body.scrollHeight + 2);
-    window.scrollTo(0, document.body.scrollHeight + 2);
-    window.scrollTo(0, document.body.scrollHeight + 2);
-  },
-  async mounted() {
-    let that = this;
+          // messages.innerHTML +=
+          this.chat.push(el
+          // `<li data-aos="fade-in" class="list-group-item bg-dark text-light massage" style="height: max-content !important;overflow: auto !important;white-space: pre-warp">${el.massage}<button class="btn btn-outline-danger" id="${el.id}" @click="delet">delet</button></li>`
+          )
+          window.scrollTo(0, document.body.scrollHeight + 2);
+          window.scrollTo(0, document.body.scrollHeight + 2);
+          window.scrollTo(0, document.body.scrollHeight + 2);
+          window.scrollTo(0, document.body.scrollHeight + 2);
+          window.scrollTo(0, document.body.scrollHeight + 2);
+        });
+      } else {
+        this.not = true;
+        this.nottext = "page dosnt exists bro (404)";
+        //     const { data, error } = await supabase
+        // .from('chats')
+        // .insert([
+          //   { name: room, chat:"[]" },
+          // ])
+          // .select()
+          // this.notfound = true
+        }
+      },
+    },
+    updated(){
+      window.scrollTo(0, document.body.scrollHeight + 2);
+      window.scrollTo(0, document.body.scrollHeight + 2);
+      window.scrollTo(0, document.body.scrollHeight + 2);
+      window.scrollTo(0, document.body.scrollHeight + 2);
+    },
+    async mounted() {
+      let socket = io("https://page-cord.hsn-bro.repl.co");
 
-    let room = window.location.pathname.replace("/", "");
-    
-    this.room = room;
-    
-    let peoples = new Set([you.name]);
-    if (!localStorage.getItem("login")) {
-      this.not = true;
-      this.nottext = "bro you should login to use page cord (101)";
-    }
-    let { data, error } = await supabase
-    .from("bros")
-    .select("*")
-    .eq("name", localStorage.getItem("name"));
-    if (!JSON.parse(data[0].pagees).includes(room)) {
+      let that = this;
+      
+      let room = window.location.pathname.replace("/", "");
+      
+      this.room = room;
+      
+      let peoples = new Set([you.name]);
+      if (!localStorage.getItem("login")) {
+        this.not = true;
+        this.nottext = "bro you should login to use page cord (101)";
+      }
+      let { data, error } = await supabase
+      .from("bros")
+      .select("*")
+      .eq("name", localStorage.getItem("name"));
+      if (!JSON.parse(data[0].pagees).includes(room)) {
       this.not = true;
       this.nottext =
       "you dont have access to this server bro <br> go back where you came from (202)";
     }
+    let count = 0
+    let timer = setInterval(()=>{
+      count++;
+      console.log("realoading");
+      socket = io("https://page-cord.hsn-bro.repl.co");
+      if (count >= 2) {
+        confirm("bro something went wrong cant connect refresh the page") ? window.location.reload() : 0;
+      }
+    },10000)
     socket.on("connect", () => {
+      clearInterval(timer)
       socket.emit("join", room);
       socket.emit("adduser", you.name, room);
       console.clear()
@@ -313,6 +287,7 @@ export default {
       });
     });
     async function reload_users(set) {
+      console.log(set);
       document.querySelector(".side ul").innerHTML = "";
       set.forEach((el, i) => {
         document.querySelector(".side ul").innerHTML += `<li name="${el}" 
@@ -401,7 +376,7 @@ export default {
           if (error) {
             alert("there is an error "+error.message);
           }
-          add("<a id='"+uid+"'>send an image named: "+uid+"</a>",false)
+          add("<a id='"+uid+"' href='"+uid+"'>send an image named: "+name+"</a>",false)
     }
     window.addEventListener("keypress", (e) => {
       if (e.key == "Enter" && !e.shiftKey) {

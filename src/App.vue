@@ -27,7 +27,7 @@ export default {
     // }
   },
   mounted() {
-    let room = window.location.pathname == "/" ? "nah" : window.location.pathname.replace("/", "");
+    let room = window.location.pathname == "/" || window.location.pathname == "/inbox" ? "nah" : window.location.pathname.replace("/", "");
     this.room = room;
    
   }

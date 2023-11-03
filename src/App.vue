@@ -134,7 +134,7 @@ export default {
       margin-right: 1px;
       left: auto;
       right: 10px;
-      width: clamp(150px,30vw,200px);
+      /* width: clamp(150px,30vw,200px); */
       display: flex;
       justify-content: center;
       align-items: center;

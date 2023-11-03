@@ -6,14 +6,18 @@
     <h1 class="text-center" >Page-cord</h1>
     <h6 class="text-center text-secondary" style="margin-top: -10px;">Page:</h6>
     </div>
-    <a @click="image" class="position-fixed" style="right: 10px;left: auto"><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512" style="height: 25px;width: 25px;fill:aliceblue"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M448 80c8.8 0 16 7.2 16 16V415.8l-5-6.5-136-176c-4.5-5.9-11.6-9.3-19-9.3s-14.4 3.4-19 9.3L202 340.7l-30.5-42.7C167 291.7 159.8 288 152 288s-15 3.7-19.5 10.1l-80 112L48 416.3l0-.3V96c0-8.8 7.2-16 16-16H448zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/></svg></a>
+    <a @click="image" class="position-fixed" style="right: 50px;left: auto"><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512" style="height: 25px;width: 25px;fill:aliceblue"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M448 80c8.8 0 16 7.2 16 16V415.8l-5-6.5-136-176c-4.5-5.9-11.6-9.3-19-9.3s-14.4 3.4-19 9.3L202 340.7l-30.5-42.7C167 291.7 159.8 288 152 288s-15 3.7-19.5 10.1l-80 112L48 416.3l0-.3V96c0-8.8 7.2-16 16-16H448zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/></svg></a>
+    <a @click="pined" class="position-fixed" style="right: 0px;left: auto"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512" style="height: 25px;width: 25px;fill:aliceblue"> <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 32C32 14.3 46.3 0 64 0H320c17.7 0 32 14.3 32 32s-14.3 32-32 32H290.5l11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3H32c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64H64C46.3 64 32 49.7 32 32zM160 384h64v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V384z"/></svg></a>
     </div>
     <ul class="list-group list-group-flush" style="padding-top: 100px;" >
       <div @click.self="hides('none',c.created_at)" data-aos="fade-in" class="list-group-item bg-dark text-light massage d-flex align-items-center gap-5" v-for="c in chat" :id="c.id">
-        <li style="height: max-content !important;overflow: auto !important;white-space: pre-warp" v-html="(c.img ? `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>`+c.massage : `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>`+$sanitize(mas(c.massage || '*empty massage*')))"></li>
+        <li style="height: max-content !important;overflow: auto !important;white-space: pre-warp" v-html="(c.img ? `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>`+c.massage : `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>`+$sanitize(mas(c.massage || '*empty massage*'))) || '*empty massage*'"></li>
         <div @click="shows(c.id,c.created_at)" class="setting position-absolute" v-if="c.user == you.name">
         <button class="btn btn-outline-danger" style=" min-width: 60px !important;" @click="!c.img ? delet(c.id) : img_delet(c.id)">delate</button>
         <button class="btn btn-outline-success" style=" min-width: 60px !important;" v-if="!c.img" @click="updat(c.id,c.massage)">update</button>
+        <button class="btn btn-outline-primary" v-if="!c.pin" style=" min-width: 60px !important;" @click="pin(c.id,true)">pin</button>
+        <button class="btn btn-outline-primary" v-else style=" min-width: 60px !important;" @click="pin(c.id,false)">unpin</button>
+
         <div style="color: gray;" id="texts" :class="c.created_at" >{{ c.created_at.split("T")[1].split(":")[0] + ":"+ c.created_at.split("T")[1].split(":")[1]+ " " +c.created_at.split("T")[0].split("-")[2]+"/" +c.created_at.split("T")[0].split("-")[1]  }}</div></div>
       </div>
     </ul>
@@ -48,6 +52,7 @@ let you = {
   name: localStorage.getItem("dname") || "unknown",
   id: 0,
 };
+let socket = io("https://page-cord.hsn-bro.repl.co");
 export default {
   data() {
     return {
@@ -59,6 +64,7 @@ export default {
       chat:[],
       you: you,
       imag: false,
+      pins: false,
       currid:0,
       setted:false,
     };
@@ -107,6 +113,16 @@ export default {
   mas(msg){
     return marked.parse(msg);
   },
+  async pin(id,dt){
+    const { data, error } = await supabase
+      .from('chat')
+      .update({ pin: dt })
+      .eq('id', id)
+      .select()
+    if (!error) {
+      alert(dt ? "massage is pinned" : "massage is unpinned")
+    }
+  },
   async img_delet(id){
     const { error } = await supabase
     .from('media')
@@ -115,6 +131,30 @@ export default {
     socket.emit("reload",this.room)
     this.imag = !this.imag
     this.ins()
+  },
+  async pined(){
+    this.pins = !this.pins
+    if (this.imag) {
+      this.imag = false
+    }
+    if(this.pins){
+        this.chat = [];
+        let { data, error } = await supabase
+      .from("chat")
+      .select("*")
+      .eq("room_name", this.room)
+      .eq("pin", true)
+      if (!error && data.length > 0) {
+        data.reverse().forEach((el) => {
+          this.chat.push(el)
+        });
+    }else{
+      this.chat.push({massage:"<p>THERES NO PINNED MASSAGE BRO</p>"})
+    }
+  }else{
+    this.ins()
+
+  }
   },
     async image(){
       this.imag = !this.imag
@@ -204,7 +244,6 @@ export default {
       window.scrollTo(0, document.body.scrollHeight + 2);
     },
     async mounted() {
-      let socket = io("https://page-cord.hsn-bro.repl.co");
 
       let that = this;
       
@@ -341,7 +380,7 @@ export default {
             you.name +
             " :" +
             "</p>" +
-            that.mas(mas),room,input.value);
+            that.$sanitize(that.mas(mas)) || that.mas('*empty massage*'),room,input.value);
           add(mas,false);
         }
       });

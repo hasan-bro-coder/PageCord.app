@@ -52,6 +52,9 @@
     "productivity",
     "social"
   ],
+  "share_target":{
+    "action": "/"
+  },
   "screenshots": [
     {
       "src": "icons/screenshot.png",

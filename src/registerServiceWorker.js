@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker'
-
-  register(`./other/sw.js`, {
+register(`/other/sw.js`, {
     ready () {
       console.log(
         'App is being served from cache by a service worker.\n' +
@@ -10,7 +9,7 @@ import { register } from 'register-service-worker'
       )
     },
     registered () {
-      console.log('Service worker has been registered.')
+      console.log('Service worker has been registered. bro')
     },
     cached () {
       console.log('Content has been cached for offline use.')

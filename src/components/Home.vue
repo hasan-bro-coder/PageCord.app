@@ -34,9 +34,12 @@
       </svg>
     </div>
     <div v-if="isLogined">
-      <div class="top text-capitalize text-center" data-aos="fade-up" data-aos-delay="1500">
-        <h4>page cord</h4>
-        <div class="">
+      <div class="top text-center text-capitalize" data-aos="fade-up" data-aos-delay="1500">
+        <a class="navbar-brand d-flex">
+    <img src="/logo_trans.png" width="23" loading="lazy" style="margin-top: -0px;" height="23" alt="">
+    <h4 style="text-transform: none;margin-left: -3px;">age cord</h4>
+  </a>
+        <div class="text-capitalize">
         <button @click="logout" class="mx-1 btn btn-outline-success text-capitalize">Logout</button>
         <a href="/inbox" class="mx-1 btn btn-outline-primary text-capitalize">inbox</a>
       </div>

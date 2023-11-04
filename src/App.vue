@@ -36,15 +36,20 @@ export default {
 
 <template>
   <Sidebar v-if="room!='nah'" :room="room"></Sidebar>
-	<router-view v-if="isOnline"></router-view>
-  <div v-else class="text-light bg-dark h-100 w-100">
+	<!-- <router-view v-if="isOnline"></router-view> -->
+  <router-view v-slot="{ Component }">
+  <transition name="fade">
+    <component :is="Component" />
+  </transition>
+</router-view>
+  <!-- <div v-else class="text-light bg-dark h-100 w-100">
     bro your offline
     <br>
     i know your bored
     
 
 
-  </div>
+  </div> -->
   <!--<component :is="currentView" />-->
 </template>
 
@@ -110,7 +115,7 @@ export default {
     ul li p{
       margin: 0 !important;
     }
-    ul .massage button{
+    ul .massage .setting button{
       /* position: absolute; */
       /* display: flex; */
       /* justify-content: center; */

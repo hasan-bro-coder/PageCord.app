@@ -52,7 +52,7 @@ export default {
       if (mobileCheck) {
         // console.log(window.mobileCheck(),e);
         // document.querySelectorAll(".cons .nav-link").forEach((el)=>el.style.pointerEvents = "none")
-        await sleep(100)
+        await sleep(500)
         // if (!this.hover) {
         document.querySelectorAll(".cons .nav-link").forEach((el) => { el.style.pointerEvents = "all" })
       }
@@ -69,6 +69,10 @@ export default {
         .from('bros')
         .select('*')
         .eq("display_name", names)
+      if (err || data.length <= 0) {
+        alert("bro user dosent exists spell check the name bro")
+        return 0
+      }
       let arr = JSON.parse(data[0].inbox)
       if (!arr.includes(this.room)) {
         arr.push(this.room)

@@ -46,7 +46,7 @@
       </div>
     </ul>
     <form id="form" class="w-100 z-3 d-flex position-fixed" action="">
-      <h6 v-if="is_typing" v-text="typer + ' is typing'" style="margin: -20px 0px 0px calc(50% - 50px);"
+      <h6 v-if="is_typing" v-text="typer" style="margin: -20px 0px 0px calc(50% - 50px);"
         class="position-fixed z-1"></h6>
       <div class="input-group mb-1">
         <button class="btn btn-outline-light plus" type="submit">+</button>
@@ -332,11 +332,12 @@ export default {
     let timer = setInterval(() => {
       count++;
       console.log("realoading");
-      socket = io("https://page-cord.hsn-bro.repl.co");
+      // socket = io("https://page-cord.hsn-bro.repl.co");
       if (count >= 2) {
         confirm("bro something went wrong cant connect refresh the page") ? window.location.reload() : 0;
       }
     }, 10000)
+    let typers = new Set([])
     socket.on("connect", () => {
       clearInterval(timer)
       socket.emit("join", room);
@@ -345,19 +346,22 @@ export default {
       console.log("connected");
       // socket.emit('message', `<p>` + you.name + " :" + "</p>" + " joined the room", room);
       socket.on("type", (name) => {
+        typers.add(name);
         that.is_typing = true
-        that.typer = name;
+        typers.forEach(names => that.typer = names+", ")
+        that.typer = ' is typing';
       })
       socket.on("notype", () => {
         that.is_typing = false
         // that.typer = name;
       })
-      socket.on("message", function (msg, main) {
+      socket.on("message", function (msg, main,isimg) {
         // console.log(msg);
         // let messages = document.querySelector("ul");
         // that.chat.push(msg)
         console.log(msg);
         let els = {
+              img:isimg,
               user: you.name,
               id: Math.random()+"ahh",
               created_at: `${new Date().getUTCFullYear()}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate() / 10 > 1 ? new Date().getUTCDate() : "0"+new Date().getUTCDate()}T${new Date().getUTCHours()}:${new Date().getUTCMinutes()}`,
@@ -500,9 +504,13 @@ export default {
       .addEventListener("input", async function (e) {
         let file = e.target.files[0];
         var reader = new FileReader();
+        that.is_typing = true
         reader.readAsBinaryString(file);
+        that.typer = 'sending';
         // reader.readAsDataURL(file);
         reader.onload = async function (e) {
+          that.typer = 'done';
+        that.is_typing = false
           let bits = e.target.result;
           if (file.type.match("image")) {
             addImage(btoa(bits), file.name, file.type, file.size);
@@ -517,7 +525,7 @@ export default {
             //     `<img loading="lazy" style="max-width: 70vw" src="${"data:" + file.type + ";base64," + btoa(bits)
             //     }">`,true
             //   );
-            socket.emit("message",`<img loading="lazy" style="max-width: 80vw" src="${"data:" + file.type + ";base64," + btoa(bits)}">`,room,you.name + " send an image");
+            socket.emit("message",`<img loading="lazy" style="max-width: 80vw" src="${"data:" + file.type + ";base64," + btoa(bits)}">`,room,you.name + " send an image",true);
 
           } else if (file.type.match("video")) {
             addImage(btoa(bits), file.name, file.type, file.size);
@@ -526,14 +534,16 @@ export default {
               `<video loading="lazy" style="max-width: 80vw" src="${"data:" + file.type + ";base64," + btoa(bits)
               }" controls></video>`,
               room,
-              you.name + " send an video"
+              you.name + " send an video",
+              true
             );
 
           } else {
             addImage(btoa(bits), file.name, file.type, file.size);
             socket.emit("message",`<a loading="lazy" href="${"data:" + file.type + ";base64," + btoa(bits)}" download="${file.name}">${file.name}</a>`,
               room,
-              you.name + " send an file"
+              you.name + " send an file",
+              true
             );
 
           }

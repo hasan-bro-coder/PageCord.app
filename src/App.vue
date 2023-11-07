@@ -7,7 +7,7 @@
 //   '/': Home,
 //   '/about': Chat
 // }
-import Sidebar from "./components/other/sidebar.vue";
+// import Sidebar from "./components/other/sidebar.vue";
 
 export default {
   data() {
@@ -16,7 +16,7 @@ export default {
     }
   },
   components: {
-    Sidebar,
+    // Sidebar,
   },
   computed: {
     isOnline(){
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <template>
-  <Sidebar v-if="room!='nah'" :room="room"></Sidebar>
+  <!-- <Sidebar v-if="room!='nah'" :room="room"></Sidebar> -->
 	<!-- <router-view v-if="isOnline"></router-view> -->
   <router-view v-slot="{ Component }">
   <transition name="fade">

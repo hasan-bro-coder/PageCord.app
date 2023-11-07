@@ -1,6 +1,6 @@
 <template class="bg-dark text-light pb-5">
   <div v-if="!not" class="bg-dark text-light pb-5 body">
-    <!-- <Sidebar :room="room"></Sidebar> -->
+    <Sidebar :room="room"></Sidebar>
     <div class="text-center position-fixed "
       style="background-color: #21252921; width:70vw;z-index: 100;top: -6px;left:50%;transform: translateX(-50%);display: flex;justify-content: center;align-items: center;">
       <div>
@@ -77,7 +77,7 @@ let you = {
   name: localStorage.getItem("dname") || "unknown",
   id: 0,
 };
-let socket = io("https://page-cord.hsn-bro.repl.co");
+let socket = {};
 export default {
   data() {
     return {
@@ -306,7 +306,7 @@ export default {
     window.scrollTo(0, document.body.scrollHeight + 2);
   },
   async mounted() {
-
+    socket = navigator.onLine ? io("https://page-cord.hsn-bro.repl.co") : 0
     let that = this;
 
     let room = window.location.pathname.replace("/", "");
@@ -332,8 +332,11 @@ export default {
     let timer = setInterval(() => {
       count++;
       console.log("realoading");
+      if (!navigator.onLine) {
+        socket.disconnect()
+      }
       // socket = io("https://page-cord.hsn-bro.repl.co");
-      if (count >= 2) {
+      if (count >= 2 && navigator.onLine) {
         confirm("bro something went wrong cant connect refresh the page") ? window.location.reload() : 0;
       }
     }, 10000)

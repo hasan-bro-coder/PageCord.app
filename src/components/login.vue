@@ -2,7 +2,7 @@
   <div class="d-flex flex-column justify-content-center align-items-center h-100" style="height: 100vh;">
     <form class="m-5">
         <div class="form-group">
-          <label for="exampleInputEmail1">User Name</label>
+          <label for="exampleInputEmail1">Email</label>
           <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your email">
           <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
@@ -42,17 +42,22 @@ export default {
     .select('*')
 		console.log(data,error)
 	data.forEach(async(el,i)=>{
-      if (document.querySelector('#exampleInputEmail1').value ==el.name && document.querySelector('#exampleInputPassword1').value == el.password) {
+    console.log(el,i);
+      if (document.querySelector('#exampleInputEmail1').value == el.name && document.querySelector('#exampleInputPassword1').value == el.password) {
 		localStorage.setItem('login','yes');
             localStorage.setItem('name', document.querySelector('#exampleInputEmail1').value);
-            localStorage.setItem('password', 					 document.querySelector('#exampleInputPassword1').value);
-            let { data, error} = await supabase
-            .from('bros')
-            .select('*')
-            .eq("name", document.querySelector('#exampleInputEmail1').value)
-            localStorage.setItem('dname', data[0].display_name);
+            // localStorage.setItem('password', 					 document.querySelector('#exampleInputPassword1').value);
+            // let { data, error} = await supabase
+            // .from('bros')
+            // .select('*')
+            // .eq("name", document.querySelector('#exampleInputEmail1').value)
+            // if (error || data.length <= 0) {
+            // alert('login Error email not found')
+            // }
+            localStorage.setItem('dname', el.display_name);
+            localStorage.setItem('token',el.user_id);
             alert('login successful')
-            window.location.pathname = '1'
+            // window.location.pathname = ""
  
 
 

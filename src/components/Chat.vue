@@ -77,7 +77,7 @@ const supabase = store.supabase
 import { marked } from "marked";
 let you = {
   name: localStorage.getItem("dname") || "unknown",
-  id: 0,
+  token: localStorage.getItem("token") ,
 };
 let socket = {};
 export default {
@@ -328,7 +328,7 @@ export default {
     let { data, error } = await supabase
       .from("bros")
       .select("*")
-      .eq("name", localStorage.getItem("name"));
+      .eq("user_id", you.token);
     if (!JSON.parse(data[0].pagees).includes(room)) {
       this.not = true;
       this.nottext =

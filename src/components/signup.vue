@@ -29,9 +29,12 @@ export default {
 	 let match = false
         document.querySelector('form').addEventListener('submit', async(e)=>{
             e.preventDefault()
+            let email = document.querySelector('#exampleInputEmail1').value
+            let pass = document.querySelector('#exampleInputPassword1').value
+            let dname = document.querySelector('#exampleInputname1').value
+            const token = self.crypto.randomUUID()
 			names.data.forEach((el,i)=>{
-				
-            if (el.name == document.querySelector('#exampleInputEmail1').value) {
+            if (el.name == email) {
               // alert('names taken bro')
 			match = true
             document.querySelector('.alert-danger').style.display = 'block';
@@ -43,13 +46,14 @@ export default {
 			const { data, error } = await supabase
 			.from('bros')
 			.insert([
-			{ name: document.querySelector('#exampleInputEmail1').value, password: document.querySelector('#exampleInputPassword1').value , display_name: document.querySelector("#exampleInputname1").value},
+			{ name: email, password: pass , display_name: document.querySelector("#exampleInputname1").value,user_id: token},
 			])
 			.select()
 
             localStorage.setItem('login','yes');
-            localStorage.setItem('name', document.querySelector('#exampleInputEmail1').value);
-            localStorage.setItem('dname', document.querySelector('#exampleInputname1').value);
+            localStorage.setItem('name', email);
+            localStorage.setItem('dname', dname);
+            localStorage.setItem('token', token);
             // localStorage.setItem('password', document.querySelector('#exampleInputPassword1').value);
             document.querySelector('.alert').style.display = 'block';
 

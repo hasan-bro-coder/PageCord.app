@@ -35,7 +35,7 @@
     </div>
     <div v-if="isLogined">
       <div class="top text-center text-capitalize" data-aos="fade-up" data-aos-delay="1500">
-        <a class="navbar-brand d-flex">
+        <a href="/" class="navbar-brand d-flex">
     <img src="/logo_trans.png" width="23" loading="lazy" style="margin-top: -0px;" height="23" alt="">
     <h4 style="text-transform: none;margin-left: -3px;">age cord</h4>
   </a>
@@ -65,7 +65,10 @@
     </div>
     <div v-else>
       <nav data-aos="fade-up" class="navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Page Cord</a>
+        <a href="/" class="navbar-brand d-flex">
+    <img src="/logo_trans.png" width="23" loading="lazy" style="margin-top: -0px;" height="23" alt="">
+    <h4 style="text-transform: none;margin-left: -3px;">age cord</h4>
+  </a>
         <ul class="smalls navbar-nav gap-2">
           <li class="nav-item ">
             <a class="nav-link" href="#">about us</a>
@@ -174,13 +177,13 @@ export default {
       let { data, err } = await supabase
       .from('bros')
       .select('*')
-      .eq("name", localStorage.getItem('name'))
+      .eq("user_id", localStorage.getItem('token'))
       let arr = JSON.parse(data[0].pagees)
       arr.push(val)
       await supabase
     .from('bros')
     .update({ pagees: arr })
-    .eq("name", localStorage.getItem('name'))
+    .eq("user_id", localStorage.getItem('token'))
     .select()
     // {
     // let { data, err } = await supabase
@@ -223,10 +226,10 @@ export default {
       let { data, error } = await supabase
         .from('bros')
         .select('*')
-        .eq("name", localStorage.getItem('name'))
+        .eq("user_id", localStorage.getItem('token'))
         if (error || data.length <= 0) {
           this.isLogined = false
-          alert("Error")
+          alert("Error in you login data bro")
           localStorage.clear()
           return 0 
         }

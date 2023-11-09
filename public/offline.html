@@ -1,70 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+</style>
+</head>
+<body onload="startGame()" style="background: black;overflow: hidden;">
+<br>
+<div style="display: flex;
+justify-content: space-between;
+align-items: center;">
+<div>
+<button id="up" style="width: 50px;height: 50px;">up</button>
+<button id="down" style="width: 50px;height: 50px;">down</button>
+</div>
+<button id="rotate" style="width: 50px;height: 50px;">rotate</button>
+</div>
+<script>
+var myGamePiece;
 
-    <title>You are offline</title>
+function startGame() {
+    myGamePiece = new component(10, 10, "blue", 225, 225);
+    myGameArea.start();
+}
 
-    <!-- Inline the page's stylesheet. -->
-    <style>
-      body {
-        font-family: helvetica, arial, sans-serif;
-        margin: 2em;
-      }
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = window.innerWidth -20
+        this.canvas.height = window.innerHeight -100;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+        document.querySelector("#up").addEventListener("mouseover",()=>{
+          myGameArea.keys = (myGameArea.keys || []);
+          myGameArea.keys["38"] = true;
+        })
+        document.querySelector("#up").addEventListener("mouseleave",()=>{
+          myGameArea.keys = (myGameArea.keys || []);
+          myGameArea.keys["38"] = false;
+        })
+        document.querySelector("#down").addEventListener("mouseover",()=>{
+          myGameArea.keys = (myGameArea.keys || []);
+          myGameArea.keys["40"] = true;
+        })
+        document.querySelector("#down").addEventListener("mouseleave",()=>{
+          myGameArea.keys = (myGameArea.keys || []);
+          myGameArea.keys["40"] = false;
+        })
+        document.querySelector("#rotate").addEventListener("mouseover",()=>{
+          myGameArea.keys["39"] = true;
+        })
+        document.querySelector("#rotate").addEventListener("mouseleave",()=>{
+          myGameArea.keys["39"] = false;
+        })
+        window.addEventListener('keydown', function (e) {
+            e.preventDefault();
+            myGameArea.keys = (myGameArea.keys || []);
+            myGameArea.keys[e.keyCode] = (e.type == "keydown");
+            console.log(e.keyCode,e.type);
+        })
+        window.addEventListener('keyup', function (e) {
+            // myGameArea.keys[e.keyCode] = (e.type == "keydown");
+            myGameArea.keys[e.keyCode] = (e.type == "keydown");
+        })
+    },
+    stop : function() {
+        clearInterval(this.interval);
+    },    
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
 
-      h1 {
-        font-style: italic;
-        color: #373fff;
-      }
+function component(width, height, color, x, y, type) {
 
-      p {
-        margin-block: 1rem;
-      }
+    this.type = type;
+    this.width = width;
+    this.height = height;
+    this.speed = 0;
+    this.angle = 0;
+    this.moveAngle = 0;
+    this.x = x;
+    this.y = y;    
+    this.update = function() {
+        ctx = myGameArea.context;
+        ctx.fillStyle = "gray";
+        ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.fillStyle = color;
+        ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
+        ctx.restore();    
+    }
+    this.newPos = function() {
+        this.angle += this.moveAngle * Math.PI / 180;
+        this.x += this.speed * Math.sin(this.angle);
+        this.y -= this.speed * Math.cos(this.angle);
+    }
+}
 
-      button {
-        display: block;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>You are offline</h1>
+function updateGameArea() {
+    myGameArea.clear();
+    myGamePiece.moveAngle = 0;
+    myGamePiece.speed = 0;
+    myGamePiece.speeder = 5;
+    if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.moveAngle = -myGamePiece.speeder; }
+    if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.moveAngle = myGamePiece.speeder; }
+    if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speed= myGamePiece.speeder; }
+    if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speed= -myGamePiece.speeder; }
+    myGamePiece.newPos();
+    myGamePiece.update();
+}
+</script>
 
-    <p>Click the button below to try reloading.</p>
-    <button type="button">⤾ Reload</button>
+<p>Make sure the gamearea has focus, and use the arrow keys to move the red square around.</p>
 
-    <!-- Inline the page's JavaScript file. -->
-    <script>
-      // Manual reload feature.
-      document.querySelector("button").addEventListener("click", () => {
-        window.location.reload();
-      });
-
-      // Listen to changes in the network state, reload when online.
-      // This handles the case when the device is completely offline.
-      window.addEventListener('online', () => {
-        window.location.reload();
-      });
-
-      // Check if the server is responding and reload the page if it is.
-      // This handles the case when the device is online, but the server
-      // is offline or misbehaving.
-      async function checkNetworkAndReload() {
-        try {
-          const response = await fetch('.');
-          // Verify we get a valid response from the server
-          if (response.status >= 200 && response.status < 500) {
-            window.location.reload();
-            return;
-          }
-        } catch {
-          // Unable to connect to the server, ignore.
-        }
-        window.setTimeout(checkNetworkAndReload, 2500);
-      }
-
-      checkNetworkAndReload();
-    </script>
-  </body>
+</body>
 </html>

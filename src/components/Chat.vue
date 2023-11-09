@@ -21,15 +21,17 @@
         </svg></a>
     </div>
     <div class="media"></div>
-    <ul class="list-group list-group-flush" style="padding-top: 100px;">
+    <ul class="list-group list-group-flush" style="padding-top: 100px;padding-bottom: 20px;">
       <div @click.self="hides('none', c.created_at)" data-aos="fade-in"
         class="list-group-item bg-dark text-light massage d-flex align-items-center gap-5" v-for="c in chat" :id="c.id">
-        <li style="height: max-content !important;overflow: auto !important;white-space: pre-warp"
+        <li @click="getImage(c.link_id);$event.target.style.color = 'transparent';$event.target.innerHTML = `<h1 style='color:white'>loading`" style="height: max-content !important;overflow: auto !important;white-space: pre-warp"
           v-html="(c.img ? `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>` + c.massage : `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>` + $sanitize(mas(c.massage || '*empty massage*'))) || '*empty massage*'">
         </li>
-        <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link"
-          @click="getImage(c.link_id);$event.target.style.display = 'none'">load</button>
+        <!-- <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link" -->
+          <!-- @click="getImage(c.link_id);$event.target.style.display = 'none'">load</button> -->
         <div @click="shows(c.id, c.created_at)" class="setting position-absolute" v-if="c.user == you.name">
+          <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link"
+          @click="getImage(c.link_id);$event.target.style.display = 'none'">load</button>
           <button class="btn btns btn-outline-danger" style=" min-width: 60px !important;"
             @click="!c.img ? delet(c.id) : img_delet(c.id)">delate</button>
           <button class="btn btns btn-outline-success" style=" min-width: 60px !important;" v-if="!c.img"
@@ -146,7 +148,12 @@ export default {
             }
             // els
             console.log(document.getElementById(id));
-            el.type.match("image") || el.type.match("video")  ? document.getElementById(id).src = `${"data:" + el.type + ";base64," + el.massage}` : document.getElementById(id).href = `${"data:" + el.type + ";base64," + el.massage}`
+            if (el.type.match("image")|| el.type.match("video")){
+                document.getElementById(id).src = `${"data:" + el.type + ";base64," + el.massage}`
+            }
+            else {
+                document.getElementById(id).href = `${"data:" + el.type + ";base64," + el.massage}`
+            }
           })
         }
       }
@@ -189,7 +196,7 @@ export default {
         .eq('id', id)
       socket.emit("reload", this.room)
       this.imag = !this.imag
-      this.ins()
+      this.image()
     },
     async pined() {
       this.pins = !this.pins
@@ -487,7 +494,15 @@ export default {
       if (error) {
         alert("there is an error " + error.message);
       }
-      type.match("image") ? add(`<img id="${uid}" style="min-width: 50px" src="dam dam" alt="${name}">`, false, true, uid) : type.match("video") ? add(`<video style="max-width: 80vw" id="${uid}" src="dam dam" controls></video>`, false, true, uid) : add(`<a id="${uid}" href="dam dam">${name}<a>`, false, true, uid)
+      // `<img loading="lazy"  style="position: fixed;left: 50%;transform: translateX(-50%) translateY(-50%);top:50%" class="nut" src="${"data:" + el.type + ";base64," + el.massage}">` : el.type.match("video") ? `<video loading="lazy" style="max-width: 80vw" src="${"data:" + el.type + ";base64," + el.massage}" controls></video>` : `<a loading="lazy" href="${"data:" + el.type + ";base64," + el.massage}" download="${el.name}">${el.name}</a>`
+      type.match("image") ? add(
+        `<img loading="lazy" id="${uid}" style="min-width: 30px;max-width:85vw;color:gray" src="dam dam" alt="click to see ${name}">`
+        , false, true, uid) : 
+        type.match("video") ? add(
+          `<video loading="lazy" style="max-width: 80vw;min-width:30px;color:gray" id="${uid}" src="dam dam" controls></video>`
+          , false, true, uid) : add(
+            `<a loading="lazy" id="${uid}" download="${name}" href="dam dam">${name}<a>`
+              , false, true, uid)
 
     }
     window.addEventListener("keypress", (e) => {

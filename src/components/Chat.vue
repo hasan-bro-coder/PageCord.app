@@ -72,9 +72,9 @@
 import Sidebar from "./other/sidebar.vue";
 // import { io } from "socket.io-client";
 import { store } from '../store'
+let parse = import("marked").then((el) => parse = el.parse);
 
 const supabase = store.supabase
-import { marked } from "marked";
 let you = {
   name: localStorage.getItem("dname") || "unknown",
   token: localStorage.getItem("token") ,
@@ -138,36 +138,36 @@ export default {
       if (this.medias) {
         // document.querySelector(".nut").remove()
       } else {
-
+        
         let { data, error } = await supabase
-          .from("media")
-          .select("*")
-          .eq("room_name", this.room)
-          .eq("uuid", id)
-          .order('id', { ascending: true });
+        .from("media")
+        .select("*")
+        .eq("room_name", this.room)
+        .eq("uuid", id)
+        .order('id', { ascending: true });
         if (!error && data.length > 0) {
           data.forEach((el) => {
             // let els = {
-            //   user: el.user,
-            //   img: true,
-            //   id: el.id,
-            //   created_at: el.created_at,
-            //   massage: el.type.match("image") ? `<img loading="lazy"  style="position: fixed;left: 50%;transform: translateX(-50%) translateY(-50%);top:50%" class="nut" src="${"data:" + el.type + ";base64," + el.massage}">` : el.type.match("video") ? `<video loading="lazy" style="max-width: 80vw" src="${"data:" + el.type + ";base64," + el.massage}" controls></video>` : `<a loading="lazy" href="${"data:" + el.type + ";base64," + el.massage}" download="${el.name}">${el.name}</a>`
-            //   // massage: `<img loading="lazy" style="max-width: 70vw" src="${el.massage}">` 
-
-            // }
-            // events.style.color = 'transparent';
-            
-            console.log(document.getElementById(id));
-            if (el.type.match("image")|| el.type.match("video")){
-              document.getElementById(id).src = `${"data:" + el.type + ";base64," + el.massage}`
+              //   user: el.user,
+              //   img: true,
+              //   id: el.id,
+              //   created_at: el.created_at,
+              //   massage: el.type.match("image") ? `<img loading="lazy"  style="position: fixed;left: 50%;transform: translateX(-50%) translateY(-50%);top:50%" class="nut" src="${"data:" + el.type + ";base64," + el.massage}">` : el.type.match("video") ? `<video loading="lazy" style="max-width: 80vw" src="${"data:" + el.type + ";base64," + el.massage}" controls></video>` : `<a loading="lazy" href="${"data:" + el.type + ";base64," + el.massage}" download="${el.name}">${el.name}</a>`
+              //   // massage: `<img loading="lazy" style="max-width: 70vw" src="${el.massage}">` 
+              
+              // }
+              // events.style.color = 'transparent';
+              
+              console.log(document.getElementById(id));
+              if (el.type.match("image")|| el.type.match("video")){
+                document.getElementById(id).src = `${"data:" + el.type + ";base64," + el.massage}`
             }
             else {
               document.getElementById(id).href = `${"data:" + el.type + ";base64," + el.massage}`
               document.getElementById(id).style.pointerEvents = `all`
               document.getElementById(id).style.color = `rgb(13, 110, 253)`
               document.getElementById(id).innerText = `Click to Download ${el.name}`
-
+              
             }
           })
         }
@@ -179,7 +179,7 @@ export default {
       this.medias = !this.medias
     },
     hides(id, created_at) {
-
+      
       if (id != "none") {
         this.currid = id
       }
@@ -196,67 +196,67 @@ export default {
       this.setted = false
     },
     mas(msg) {
-      return marked.parse(msg);
+      return parse(msg);
     },
     async pin(id, dt) {
       const { data, error } = await supabase
-        .from('chat')
-        .update({ pin: dt })
-        .eq('id', id)
+      .from('chat')
+      .update({ pin: dt })
+      .eq('id', id)
         .select()
-      if (!error) {
-        alert(dt ? "massage is pinned" : "massage is unpinned")
-      }
-    },
-    async img_delet(id) {
+        if (!error) {
+          alert(dt ? "massage is pinned" : "massage is unpinned")
+        }
+      },
+      async img_delet(id) {
       const { error } = await supabase
         .from('media')
         .delete()
         .eq('id', id)
-      socket.emit("reload", this.room)
-      this.imag = !this.imag
-      this.image()
-    },
-    async pined() {
-      this.pins = !this.pins
-      if (this.imag) {
-        this.imag = false
-      }
-      if (this.pins) {
-        this.chat = [];
-        let { data, error } = await supabase
+        socket.emit("reload", this.room)
+        this.imag = !this.imag
+        this.image()
+      },
+      async pined() {
+        this.pins = !this.pins
+        if (this.imag) {
+          this.imag = false
+        }
+        if (this.pins) {
+          this.chat = [];
+          let { data, error } = await supabase
           .from("chat")
           .select("*")
           .eq("room_name", this.room)
           .eq("pin", true)
-        if (!error && data.length > 0) {
-          data.reverse().forEach((el) => {
-            this.chat.push(el)
-          });
+          if (!error && data.length > 0) {
+            data.reverse().forEach((el) => {
+              this.chat.push(el)
+            });
+          } else {
+            this.chat.push({ massage: "<p>THERES NO PINNED MASSAGE BRO</p>" })
+          }
         } else {
-          this.chat.push({ massage: "<p>THERES NO PINNED MASSAGE BRO</p>" })
+          this.ins()
+          
         }
-      } else {
-        this.ins()
-
-      }
-    },
-    async image() {
-      this.imag = !this.imag
-      if (this.imag) {
-        this.chat = [];
-        let { data, error } = await supabase
+      },
+      async image() {
+        this.imag = !this.imag
+        if (this.imag) {
+          this.chat = [];
+          let { data, error } = await supabase
           .from("media")
           .select("*")
           .eq("room_name", this.room)
           // .lt("size",100000)
           .order('id', { ascending: true });
-        if (!error && data.length > 0) {
-          data.forEach((el) => {
-            let els = {
-              user: el.user,
-              img: true,
-              id: el.id,
+          if (!error && data.length > 0) {
+            data.forEach((el) => {
+              let els = {
+                user: el.user,
+                img: true,
+                id: el.id,
               created_at: el.created_at,
               massage: el.type.match("image") ? `<img loading="lazy" style="max-width: 80vw" src="${"data:" + el.type + ";base64," + el.massage}">` : el.type.match("video") ? `<video loading="lazy" style="max-width: 80vw" src="${"data:" + el.type + ";base64," + el.massage}" controls></video>` : `<a loading="lazy" href="${"data:" + el.type + ";base64," + el.massage}" download="${el.name}">${el.name}</a>`
               // massage: `<img loading="lazy" style="max-width: 70vw" src="${el.massage}">` 
@@ -271,32 +271,32 @@ export default {
     },
     async delet(id) {
       const { error } = await supabase
-        .from('chat')
-        .delete()
-        .eq('id', id)
+      .from('chat')
+      .delete()
+      .eq('id', id)
       socket.emit("reload", this.room)
       this.ins()
     },
     async updat(id, defaults) {
       let datas = prompt("type:", defaults)
-
+      
       const { data, error } = await supabase
-        .from('chat')
-        .update({ massage: datas || defaults })
-        .eq('id', id)
-        .select()
+      .from('chat')
+      .update({ massage: datas || defaults })
+      .eq('id', id)
+      .select()
       socket.emit("reload", this.room)
       this.ins()
     },
     async ins() {
       this.chat = [];
       let { data, error } = await supabase
-        .from("chat")
-        .select("*")
-        .eq("room_name", this.room)
-        .eq("media", false)
-        .limit(200)
-        .order('id', { ascending: false });
+      .from("chat")
+      .select("*")
+      .eq("room_name", this.room)
+      .eq("media", false)
+      .limit(200)
+      .order('id', { ascending: false });
       if (!error && data.length > 0) {
         // let chat = JSON.parse(data[0].chat);
         data.reverse().forEach((el) => {
@@ -304,7 +304,7 @@ export default {
           //  console.log(el.massage);al
           // messages.innerHTML +=
           this.chat.push(el
-            // `<li data-aos="fade-in" class="list-group-item bg-dark text-light massage" style="height: max-content !important;overflow: auto !important;white-space: pre-warp">${el.massage}<button class="btn btn-outline-danger" id="${el.id}" @click="delet">delet</button></li>`
+          // `<li data-aos="fade-in" class="list-group-item bg-dark text-light massage" style="height: max-content !important;overflow: auto !important;white-space: pre-warp">${el.massage}<button class="btn btn-outline-danger" id="${el.id}" @click="delet">delet</button></li>`
           )
           window.scrollTo(0, document.body.scrollHeight + 2);
           window.scrollTo(0, document.body.scrollHeight + 2);
@@ -318,39 +318,39 @@ export default {
         //     const { data, error } = await supabase
         // .from('chats')
         // .insert([
-        //   { name: room, chat:"[]" },
-        // ])
-        // .select()
-        // this.notfound = true
-      }
+          //   { name: room, chat:"[]" },
+          // ])
+          // .select()
+          // this.notfound = true
+        }
+      },
     },
-  },
-  updated() {
-    window.scrollTo(0, document.body.scrollHeight + 2);
-    window.scrollTo(0, document.body.scrollHeight + 2);
-    window.scrollTo(0, document.body.scrollHeight + 2);
-    window.scrollTo(0, document.body.scrollHeight + 2);
-  },
-  async mounted() {
-    Notification.requestPermission();
-    socket = navigator.onLine ? io("https://page-cord.hsn-bro.repl.co") : 0
-    let that = this;
-
-    let room = window.location.pathname.replace("/", "");
-
-    this.room = room;
-
-    let peoples = new Set([you.name]);
-    if (!localStorage.getItem("login")) {
-      this.not = true;
-      this.nottext = "bro you should login to use page cord (101)";
-    }
-    let { data, error } = await supabase
+    updated() {
+      window.scrollTo(0, document.body.scrollHeight + 2);
+      window.scrollTo(0, document.body.scrollHeight + 2);
+      window.scrollTo(0, document.body.scrollHeight + 2);
+      window.scrollTo(0, document.body.scrollHeight + 2);
+    },
+    async mounted() {
+      Notification.requestPermission();
+      socket = navigator.onLine ? io("https://page-cord.hsn-bro.repl.co") : 0
+      let that = this;
+      
+      let room = window.location.pathname.replace("/", "");
+      
+      this.room = room;
+      
+      let peoples = new Set([you.name]);
+      if (!localStorage.getItem("login")) {
+        this.not = true;
+        this.nottext = "bro you should login to use page cord (101)";
+      }
+      let { data, error } = await supabase
       .from("bros")
       .select("*")
       .eq("user_id", you.token);
-    if (!JSON.parse(data[0].pagees).includes(room)) {
-      this.not = true;
+      if (!JSON.parse(data[0].pagees).includes(room)) {
+        this.not = true;
       this.nottext =
         "you dont have access to this server bro <br> go back where you came from (202)";
         throw Error("nah left go away")

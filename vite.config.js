@@ -8,6 +8,7 @@ export default defineConfig({
   base:"./",
   server: {
     host: true,
+    port: 8940
     // hmr: false
   },
   plugins: [vue()],

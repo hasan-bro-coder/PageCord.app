@@ -492,8 +492,9 @@
   "shortcuts": [
     {
       "name": "pagecord",
-      "url": "https://pagecord.vercel.app/1",
-      "description": "first page"
+      "url": "/1",
+      "description": "first page",
+      "icon": "./windows11/Square44x44Logo.targetsize-96.png"
     }
   ],
   "related_applications": [

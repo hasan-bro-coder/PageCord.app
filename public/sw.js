@@ -24,7 +24,11 @@ self.addEventListener('notificationclick', (event) => {
   var fullPath = self.location.origin + event.notification.data.path; 
   clients.openWindow(fullPath); 
 });
-
+self.addEventListener('sync', event => {
+  if (event.tag === 'database-sync') {
+    event.waitUntil(console.log("syncing bro"))
+  }
+});
 self.addEventListener('install', event => {
   const files = [pageFallback];
   if (imageFallback) {

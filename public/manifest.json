@@ -515,12 +515,6 @@
       "auto"
     ]
   },
-  "protocol_handlers": [
-    {
-      "protocol": "page",
-      "url": "/%s"
-    }
-  ],
   "related_applications": [
     {
       "platform": "chrome_web_store",

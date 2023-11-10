@@ -482,6 +482,13 @@
       "sizes": "1360x649",
       "type": "image/png",
       "platform": "wide"
+    },
+    {
+      "src": "windows11/SplashScreen.scale-200.png",
+      "sizes": "1240x600",
+      "type": "image/png",
+      "platform": "wide",
+      "form_factor": "wide"
     }
   ],
   "edge_side_panel": {
@@ -494,9 +501,20 @@
       "name": "pagecord",
       "url": "/1",
       "description": "first page",
-      "icon": "./windows11/Square44x44Logo.targetsize-96.png"
+      "icons": [
+        {
+          "src": "windows11/Square44x44Logo.targetsize-96.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ],
+  "launch_handler": {
+    "client_mode": [
+      "navigate-existing",
+      "auto"
+    ]
+  },
   "related_applications": [
     {
       "platform": "webapp",

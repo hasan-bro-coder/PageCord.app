@@ -515,9 +515,15 @@
       "auto"
     ]
   },
+  "protocol_handlers": [
+    {
+      "protocol": "page",
+      "url": "/%s"
+    }
+  ],
   "related_applications": [
     {
-      "platform": "webapp",
+      "platform": "chrome_web_store",
       "url": "https://discord.com",
       "id": ""
     }

@@ -17,13 +17,14 @@ self.addEventListener('push', (event) => {
       body: 'idk why am i sending notification',
       icon: './android/android-launchericon-144-144.png',
     });
-  );
+    );
 });
 self.addEventListener('notificationclick', (event) => {
   event.notification.close(); 
   var fullPath = self.location.origin + event.notification.data.path; 
   clients.openWindow(fullPath); 
 });
+
 self.addEventListener('install', event => {
   const files = [pageFallback];
   if (imageFallback) {

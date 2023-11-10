@@ -24,14 +24,14 @@
     <ul class="list-group list-group-flush" style="padding-top: 100px;padding-bottom: 20px;">
       <div @click.self="hides('none', c.created_at)" data-aos="fade-in"
         class="list-group-item bg-dark text-light massage d-flex align-items-center gap-5" v-for="c in chat" :id="c.id">
-        <li @click="getImage(c.link_id);$event.target.style.color = 'transparent';$event.target.innerHTML = `<h1 style='color:white'>loading`" style="height: max-content !important;overflow: auto !important;white-space: pre-warp"
+        <li @click.once="loadImg(c.link || false,c.link_id,$event,c.type)" style="height: max-content !important;overflow: auto !important;white-space: pre-warp"
           v-html="(c.img ? `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>` + c.massage : `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>` + $sanitize(mas(c.massage || '*empty massage*'))) || '*empty massage*'">
         </li>
         <!-- <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link" -->
           <!-- @click="getImage(c.link_id);$event.target.style.display = 'none'">load</button> -->
         <div @click="shows(c.id, c.created_at)" class="setting position-absolute" v-if="c.user == you.name">
           <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link"
-          @click="getImage(c.link_id);$event.target.style.display = 'none'">load</button>
+          @click.once="loadImg(c.link || false,c.link_id,$event,c.type);$event.target.style.display = 'none'">load</button>
           <button class="btn btns btn-outline-danger" style=" min-width: 60px !important;"
             @click="!c.img ? delet(c.id) : img_delet(c.id)">delate</button>
           <button class="btn btns btn-outline-success" style=" min-width: 60px !important;" v-if="!c.img"
@@ -121,10 +121,20 @@ export default {
         this.setted = false
       }
     },
-    async getImage(id) {
+    async loadImg(img,link_id,events,type){
+      console.log(img,link_id,events,type);
+      if(img){
+        this.getImage(link_id,events,type);
+      }
+      else {
+        0
+      }
+    },
+    async getImage(id,events,type) {
       // this.chat = [];
       // console.log(document.querySelector(".nut"));
       console.log("remove");
+      type.match("image")|| type.match("video") ? events.target.innerHTML += `<h1 style='color:white'>loading</h1>` : document.getElementById(id).innerText = `loading the file`
       if (this.medias) {
         // document.querySelector(".nut").remove()
       } else {
@@ -134,27 +144,36 @@ export default {
           .select("*")
           .eq("room_name", this.room)
           .eq("uuid", id)
-          .order('id', { ascending: false });
+          .order('id', { ascending: true });
         if (!error && data.length > 0) {
-          data.reverse().forEach((el) => {
-            let els = {
-              user: el.user,
-              img: true,
-              id: el.id,
-              created_at: el.created_at,
-              massage: el.type.match("image") ? `<img loading="lazy"  style="position: fixed;left: 50%;transform: translateX(-50%) translateY(-50%);top:50%" class="nut" src="${"data:" + el.type + ";base64," + el.massage}">` : el.type.match("video") ? `<video loading="lazy" style="max-width: 80vw" src="${"data:" + el.type + ";base64," + el.massage}" controls></video>` : `<a loading="lazy" href="${"data:" + el.type + ";base64," + el.massage}" download="${el.name}">${el.name}</a>`
-              // massage: `<img loading="lazy" style="max-width: 70vw" src="${el.massage}">` 
+          data.forEach((el) => {
+            // let els = {
+            //   user: el.user,
+            //   img: true,
+            //   id: el.id,
+            //   created_at: el.created_at,
+            //   massage: el.type.match("image") ? `<img loading="lazy"  style="position: fixed;left: 50%;transform: translateX(-50%) translateY(-50%);top:50%" class="nut" src="${"data:" + el.type + ";base64," + el.massage}">` : el.type.match("video") ? `<video loading="lazy" style="max-width: 80vw" src="${"data:" + el.type + ";base64," + el.massage}" controls></video>` : `<a loading="lazy" href="${"data:" + el.type + ";base64," + el.massage}" download="${el.name}">${el.name}</a>`
+            //   // massage: `<img loading="lazy" style="max-width: 70vw" src="${el.massage}">` 
 
-            }
-            // els
+            // }
+            // events.style.color = 'transparent';
+            
             console.log(document.getElementById(id));
             if (el.type.match("image")|| el.type.match("video")){
-                document.getElementById(id).src = `${"data:" + el.type + ";base64," + el.massage}`
+              document.getElementById(id).src = `${"data:" + el.type + ";base64," + el.massage}`
             }
             else {
-                document.getElementById(id).href = `${"data:" + el.type + ";base64," + el.massage}`
+              document.getElementById(id).href = `${"data:" + el.type + ";base64," + el.massage}`
+              document.getElementById(id).style.pointerEvents = `all`
+              document.getElementById(id).style.color = `rgb(13, 110, 253)`
+              document.getElementById(id).innerText = `Click to Download ${el.name}`
+
             }
           })
+        }
+        else{
+          document.getElementById(id).innerText = "file might been deleted"
+          document.getElementById(id).alt = "file might been deleted"
         }
       }
       this.medias = !this.medias
@@ -469,7 +488,7 @@ export default {
     }
     init();
 
-    async function add(msg, media, link, linktext) {
+    async function add(msg, media, link, linktext , type) {
       // let { data, error } = await supabase
       //   .from("chat")
       //   .select("*")
@@ -479,7 +498,7 @@ export default {
       // if (chat.length > 100) {
       let { data, error } = await supabase
         .from("chat")
-        .insert({ massage: msg, room_name: room, media: media, user: you.name, link: link, link_id: linktext })
+        .insert({ massage: msg, room_name: room, media: media, user: you.name, link: link, link_id: linktext,type: type})
         .eq("room_name", room)
         .select();
     }
@@ -496,13 +515,13 @@ export default {
       }
       // `<img loading="lazy"  style="position: fixed;left: 50%;transform: translateX(-50%) translateY(-50%);top:50%" class="nut" src="${"data:" + el.type + ";base64," + el.massage}">` : el.type.match("video") ? `<video loading="lazy" style="max-width: 80vw" src="${"data:" + el.type + ";base64," + el.massage}" controls></video>` : `<a loading="lazy" href="${"data:" + el.type + ";base64," + el.massage}" download="${el.name}">${el.name}</a>`
       type.match("image") ? add(
-        `<img loading="lazy" id="${uid}" style="min-width: 30px;max-width:85vw;color:gray" src="dam dam" alt="click to see ${name}">`
-        , false, true, uid) : 
+        `<img loading="lazy" id="${uid}" style="min-width: 30px;max-width:85vw;color:gray" src="dam dam" alt="click to load ${name}">`
+        , false, true, uid,type) : 
         type.match("video") ? add(
           `<video loading="lazy" style="max-width: 80vw;min-width:30px;color:gray" id="${uid}" src="dam dam" controls></video>`
-          , false, true, uid) : add(
-            `<a loading="lazy" id="${uid}" download="${name}" href="dam dam">${name}<a>`
-              , false, true, uid)
+          , false, true, uid,type) : add(
+            `<a loading="lazy" id="${uid}" download="${name}" style="pointer-events: none;color:gray">click to load ${name}<a>`
+              , false, true, uid,type)
 
     }
     window.addEventListener("keypress", (e) => {

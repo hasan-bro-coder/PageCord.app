@@ -476,12 +476,17 @@
     "productivity",
     "social"
   ],
-  "share_target":{
-    "action": "/"
+  "share_target": {
+    "action": "https://pagecord.vercel.app/",
+    "params": {
+      "title": "nothing to share bro",
+      "text": "nothing bro",
+      "url": "https://pagecord.vercel.app/"
+    }
   },
   "screenshots": [
     {
-      "src": "icons/screenshot.png",
+      "src": "other/screenshot.png",
       "sizes": "1280x720",
       "type": "image/png",
       "platform": "wide"

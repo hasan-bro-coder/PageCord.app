@@ -90,7 +90,11 @@ app.use(Vue3Sanitize,{
   "a": [
     "href",
     "name",
-    "target"
+    "target",
+    "id",
+    "class",
+    "download",
+    "style"
   ],
   "img": [
     "src",

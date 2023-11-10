@@ -332,6 +332,7 @@ export default {
     window.scrollTo(0, document.body.scrollHeight + 2);
   },
   async mounted() {
+    Notification.requestPermission();
     socket = navigator.onLine ? io("https://page-cord.hsn-bro.repl.co") : 0
     let that = this;
 
@@ -408,6 +409,7 @@ export default {
         // `<li data-aos="fade-in" class="list-group-item bg-dark text-light" style="height: max-content !important;overflow: auto !important;white-space: pre-warp">${msg}</li>`;
         window.scrollTo(0, document.body.scrollHeight + 2);
         if (document.visibilityState === "hidden") {
+         
           let notification = new Notification(
             "New massege from page: " + room + "\n \n",
             { body: "\n\n\n\n" + main, silent: true }

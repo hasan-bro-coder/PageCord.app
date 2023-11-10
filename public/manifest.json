@@ -479,7 +479,7 @@
   "screenshots": [
     {
       "src": "other/screenshot.png",
-      "sizes": "1280x720",
+      "sizes": "1360x649",
       "type": "image/png",
       "platform": "wide"
     }

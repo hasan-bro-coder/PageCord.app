@@ -5,15 +5,15 @@ import Chat from './components/Chat.vue'
 // import Login from './components/login.vue'
 // import Sign from './components/signup.vue'
 // import Inbox from './components/inbox.vue'
-
+import Home from './components/home.vue'
 // import 
 
 const router = createRouter({
 	history: createWebHistory(),
 	routes: [
-		// { path: '/', component: Home},
+		{ path: '/', component: Home},
 		// { path: "/:id", component: import('./components/Chat.vue') },
-		{ path: '/', component: import('./components/Home.vue')},
+		// { path: '/', component: import('./components/Home.vue')},
 		{ path: "/login", component: import('./components/login.vue') },
 		{ path: "/inbox", component: import('./components/inbox.vue') },
 		{ path: "/:id", component: Chat },

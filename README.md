@@ -2,4 +2,6 @@
 # this is page cord
 ## discords 1st copy
 ### like mcdonalds vs wendys
-- v20
+
+-v23
+- v24

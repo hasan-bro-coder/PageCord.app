@@ -3,6 +3,6 @@
 ## discords 1st copy
 ### like mcdonalds vs wendys
 
--v23
+- v23
 - v24
-- v24
+- v25

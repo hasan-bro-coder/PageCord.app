@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './routes'
-import('./registerServiceWorker')
+import './registerServiceWorker'
 import Vue3Sanitize from "vue-3-sanitize";
 import('aos/dist/aos.css')
 import 'bootstrap/dist/css/bootstrap.min.css'

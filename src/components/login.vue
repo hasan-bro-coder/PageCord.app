@@ -41,29 +41,37 @@ export default {
     .from('bros')
     .select('*')
 		console.log(data,error)
+    let found = false
 	data.forEach(async(el,i)=>{
     console.log(el,i);
+    if (found) {
+      return 0
+    }
       if (document.querySelector('#exampleInputEmail1').value == el.name && document.querySelector('#exampleInputPassword1').value == el.password) {
-		localStorage.setItem('login','yes');
-            localStorage.setItem('name', document.querySelector('#exampleInputEmail1').value);
-            // localStorage.setItem('password', 					 document.querySelector('#exampleInputPassword1').value);
-            // let { data, error} = await supabase
-            // .from('bros')
-            // .select('*')
-            // .eq("name", document.querySelector('#exampleInputEmail1').value)
-            // if (error || data.length <= 0) {
-            // alert('login Error email not found')
-            // }
-            localStorage.setItem('dname', el.display_name);
-            localStorage.setItem('token',el.user_id);
-            alert('login successful')
-            // window.location.pathname = ""
- 
-
-
-		  
-      }
-    })
+        localStorage.setItem('login','yes');
+        localStorage.setItem('name', document.querySelector('#exampleInputEmail1').value);
+        // localStorage.setItem('password', 					 document.querySelector('#exampleInputPassword1').value);
+        // let { data, error} = await supabase
+        // .from('bros')
+        // .select('*')
+        // .eq("name", document.querySelector('#exampleInputEmail1').value)
+        // if (error || data.length <= 0) {
+          // alert('login Error email not found')
+          // }
+          localStorage.setItem('dname', el.display_name);
+          localStorage.setItem('token',el.user_id);
+          alert('login successful')
+          found = true
+          window.location.pathname = "/"
+          
+          
+          
+          
+        }
+      })
+    if (!found) {
+      alert('login failed')
+    }
 })
   }}
 </script>

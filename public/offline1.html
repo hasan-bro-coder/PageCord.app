@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+</style>
+</head>
+<body onload="startGame()" style="background: black;overflow: hidden;">
+<br>
+<div style="display: flex;
+justify-content: space-between;
+align-items: center;">
+<div>
+<button id="up" style="width: 50px;height: 50px;">up</button>
+<button id="down" style="width: 50px;height: 50px;">down</button>
+</div>
+<button id="rotate" style="width: 50px;height: 50px;">rotate</button>
+</div>
+<script>
+var myGamePiece;
+
+function startGame() {
+    myGamePiece = new component(10, 10, "blue", 225, 225);
+    myGameArea.start();
+}
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = window.innerWidth -20
+        this.canvas.height = window.innerHeight -100;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+        document.querySelector("#up").addEventListener("mouseover",()=>{
+          myGameArea.keys = (myGameArea.keys || []);
+          myGameArea.keys["38"] = true;
+        })
+        document.querySelector("#up").addEventListener("mouseleave",()=>{
+          myGameArea.keys = (myGameArea.keys || []);
+          myGameArea.keys["38"] = false;
+        })
+        document.querySelector("#down").addEventListener("mouseover",()=>{
+          myGameArea.keys = (myGameArea.keys || []);
+          myGameArea.keys["40"] = true;
+        })
+        document.querySelector("#down").addEventListener("mouseleave",()=>{
+          myGameArea.keys = (myGameArea.keys || []);
+          myGameArea.keys["40"] = false;
+        })
+        document.querySelector("#rotate").addEventListener("mouseover",()=>{
+          myGameArea.keys["39"] = true;
+        })
+        document.querySelector("#rotate").addEventListener("mouseleave",()=>{
+          myGameArea.keys["39"] = false;
+        })
+        window.addEventListener('keydown', function (e) {
+            e.preventDefault();
+            myGameArea.keys = (myGameArea.keys || []);
+            myGameArea.keys[e.keyCode] = (e.type == "keydown");
+            console.log(e.keyCode,e.type);
+        })
+        window.addEventListener('keyup', function (e) {
+            // myGameArea.keys[e.keyCode] = (e.type == "keydown");
+            myGameArea.keys[e.keyCode] = (e.type == "keydown");
+        })
+    },
+    stop : function() {
+        clearInterval(this.interval);
+    },    
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
+
+function component(width, height, color, x, y, type) {
+
+    this.type = type;
+    this.width = width;
+    this.height = height;
+    this.speed = 0;
+    this.angle = 0;
+    this.moveAngle = 0;
+    this.x = x;
+    this.y = y;    
+    this.update = function() {
+        ctx = myGameArea.context;
+        ctx.fillStyle = "gray";
+        ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.fillStyle = color;
+        ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
+        ctx.restore();    
+    }
+    this.newPos = function() {
+        this.angle += this.moveAngle * Math.PI / 180;
+        this.x += this.speed * Math.sin(this.angle);
+        this.y -= this.speed * Math.cos(this.angle);
+    }
+}
+
+function updateGameArea() {
+    myGameArea.clear();
+    myGamePiece.moveAngle = 0;
+    myGamePiece.speed = 0;
+    myGamePiece.speeder = 5;
+    if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.moveAngle = -myGamePiece.speeder; }
+    if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.moveAngle = myGamePiece.speeder; }
+    if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speed= myGamePiece.speeder; }
+    if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speed= -myGamePiece.speeder; }
+    myGamePiece.newPos();
+    myGamePiece.update();
+}
+</script>
+
+<p>Make sure the gamearea has focus, and use the arrow keys to move the red square around.</p>
+
+</body>
+</html>

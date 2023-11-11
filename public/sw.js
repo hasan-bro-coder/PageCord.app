@@ -11,24 +11,24 @@ const fontFallback = false;
  
 setDefaultHandler(new NetworkOnly());
 
-self.addEventListener('push', (event) => {
-  event.waitUntil(
-    self.registration.showNotification('new notification for no reason', {
-      body: 'idk why am i sending notification',
-      icon: './android/android-launchericon-144-144.png',
-    })
-    );
-});
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close(); 
-  var fullPath = self.location.origin + event.notification.data.path; 
-  clients.openWindow(fullPath); 
-});
-self.addEventListener('sync', event => {
-  if (event.tag === 'database-sync') {
-    event.waitUntil(console.log("syncing bro"))
-  }
-});
+// self.addEventListener('push', (event) => {
+//   event.waitUntil(
+//     self.registration.showNotification('new notification for no reason', {
+//       body: 'idk why am i sending notification',
+//       icon: './android/android-launchericon-144-144.png',
+//     })
+//     );
+// });
+// self.addEventListener('notificationclick', (event) => {
+//   event.notification.close(); 
+//   var fullPath = self.location.origin + event.notification.data.path; 
+//   clients.openWindow(fullPath); 
+// });
+// self.addEventListener('sync', event => {
+//   if (event.tag === 'database-sync') {
+//     event.waitUntil(console.log("syncing bro"))
+//   }
+// });
 self.addEventListener('install', event => {
   const files = [pageFallback];
   if (imageFallback) {

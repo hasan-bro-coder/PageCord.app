@@ -1,14 +1,17 @@
 import { createApp } from 'vue'
+import './registerServiceWorker'
 import App from './App.vue'
 import router from './routes'
-import './registerServiceWorker'
 import Vue3Sanitize from "vue-3-sanitize";
-import('aos/dist/aos.css')
-import('bootstrap/dist/css/bootstrap.css');
+import 'aos/dist/aos.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+// node_modules\bootstrap\dist\css\bootstrap-utilities.css
+// import 'bootstrap/dist/css/bootstrap.rtl.min.css'
+// import('bootstrap/dist/css/bootstrap.min.css');
 
 let app = createApp(App)
 app.use(router)
-app.use(Vue3Sanitize,{
+app.use(Vue3Sanitize,{ 
   allowedTags:[
     "address",
     "article",
@@ -131,6 +134,6 @@ app.use(Vue3Sanitize,{
 
 // app.use()
 app.mount('body')
-if (typeof navigator.serviceWorker !== 'undefined') {
-//     navigator.serviceWorker.register('/other/sw.js')
-}
+// if (typeof navigator.serviceWorker !== 'undefined') {
+    // navigator.serviceWorker.register('/sw.js')
+// }

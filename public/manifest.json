@@ -2,7 +2,7 @@
   "name": "Page-cord",
   "short_name": "PageCord",
   "theme_color": "#444444",
-  "id": "894",
+  "id": "8940",
   "icons": [
     {
       "src": "windows11/SmallTile.scale-100.png",
@@ -347,6 +347,21 @@
     {
       "src": "android/android-launchericon-48-48.png",
       "sizes": "48x48"
+    },
+    {
+      "src": "android/maskable_icon_x96.png",
+      "sizes": "96x96",
+      "purpose": "maskable"
+    },
+    {
+      "src": "android/maskable_icon_x128.png",
+      "sizes": "128x128",
+      "purpose": "maskable"
+    },
+    {
+      "src": "android/maskable_icon.png",
+      "sizes": "418x418",
+      "purpose": "maskable"
     },
     {
       "src": "ios/16.png",

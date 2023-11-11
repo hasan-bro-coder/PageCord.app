@@ -24,14 +24,15 @@
     <ul class="list-group list-group-flush" style="padding-top: 100px;padding-bottom: 20px;">
       <div @click.self="hides('none', c.created_at)" data-aos="fade-in"
         class="list-group-item bg-dark text-light massage d-flex align-items-center gap-5" v-for="c in chat" :id="c.id">
-        <li @click.once="loadImg(c.link || false,c.link_id,$event,c.type)" style="height: max-content !important;overflow: auto !important;white-space: pre-warp"
+        <li @click.once="loadImg(c.link || false,c.link_id,$event,c.type,true)" style="height: max-content !important;overflow: auto !important;white-space: pre-warp"
           v-html="(c.img ? `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>` + c.massage : `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>` + $sanitize(mas(c.massage || '*empty massage*'))) || '*empty massage*'">
         </li>
-        <!-- <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link" -->
-          <!-- @click="getImage(c.link_id);$event.target.style.display = 'none'">load</button> -->
+        <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link && c.user != you.name"
+          @click="getImage(c.link_id,$events,c.type,false);$event.target.style.display = 'none'">load</button>
+
         <div @click="shows(c.id, c.created_at)" class="setting position-absolute" v-if="c.user == you.name">
           <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link"
-          @click.once="loadImg(c.link || false,c.link_id,$event,c.type);$event.target.style.display = 'none'">load</button>
+          @click.once="loadImg(c.link || false,c.link_id,$event,c.type,false);$event.target.style.display = 'none'">load</button>
           <button class="btn btns btn-outline-danger" style=" min-width: 60px !important;"
             @click="!c.img ? delet(c.id) : img_delet(c.id)">delate</button>
           <button class="btn btns btn-outline-success" style=" min-width: 60px !important;" v-if="!c.img"
@@ -69,9 +70,17 @@
   </div>
 </template>
 <script>
-import Sidebar from "./other/sidebar.vue";
+// import Sidebar from "./other/sidebar.vue";
 // import { io } from "socket.io-client";
 import { store } from '../store'
+import { defineAsyncComponent } from 'vue'
+// let store2 = ""
+// await import('../store.js').then((el)=>{
+//   store = el.store
+//   console.log(el);
+// })
+// let store = import('../store.js').then(el => store = el.store)
+
 let parse = import("marked").then((el) => parse = el.parse);
 
 const supabase = store.supabase
@@ -80,6 +89,7 @@ let you = {
   token: localStorage.getItem("token") ,
 };
 let socket = {};
+
 export default {
   data() {
     return {
@@ -98,7 +108,9 @@ export default {
     };
   },
   components: {
-    Sidebar,
+    Sidebar : defineAsyncComponent(() =>
+      import("./other/sidebar.vue")
+    ),
   },
   methods: {
     shows(id, created_at) {
@@ -121,24 +133,17 @@ export default {
         this.setted = false
       }
     },
-    async loadImg(img,link_id,events,type){
+    async loadImg(img,link_id,events,type,inner){
       console.log(img,link_id,events,type);
       if(img){
-        this.getImage(link_id,events,type);
+        this.getImage(link_id,events,type,inner);
       }
       else {
         0
       }
     },
-    async getImage(id,events,type) {
-      // this.chat = [];
-      // console.log(document.querySelector(".nut"));
-      console.log("remove");
-      type.match("image")|| type.match("video") ? events.target.innerHTML += `<h1 style='color:white'>loading</h1>` : document.getElementById(id).innerText = `loading the file`
-      if (this.medias) {
-        // document.querySelector(".nut").remove()
-      } else {
-        
+    async getImage(id,events,type,load) {
+      if (load) type.match("image")|| type.match("video") ? events.target.innerHTML += `<h1 style='color:white'>loading</h1>` : document.getElementById(id).innerText = `loading the file`;
         let { data, error } = await supabase
         .from("media")
         .select("*")
@@ -175,8 +180,7 @@ export default {
           document.getElementById(id).innerText = "file might been deleted"
           document.getElementById(id).alt = "file might been deleted"
         }
-      }
-      this.medias = !this.medias
+
     },
     hides(id, created_at) {
       

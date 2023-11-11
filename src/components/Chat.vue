@@ -69,9 +69,10 @@
   </div>
 </template>
 <script>
-import Sidebar from "./other/sidebar.vue";
+// import Sidebar from "./other/sidebar.vue";
 // import { io } from "socket.io-client";
 import { store } from '../store'
+import { defineAsyncComponent } from 'vue'
 // let store2 = ""
 // await import('../store.js').then((el)=>{
 //   store = el.store
@@ -87,6 +88,7 @@ let you = {
   token: localStorage.getItem("token") ,
 };
 let socket = {};
+
 export default {
   data() {
     return {
@@ -105,7 +107,9 @@ export default {
     };
   },
   components: {
-    Sidebar,
+    Sidebar : defineAsyncComponent(() =>
+      import("./other/sidebar.vue")
+    ),
   },
   methods: {
     shows(id, created_at) {

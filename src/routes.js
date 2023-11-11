@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router"
-// import Home from './components/Home.vue'
 import Chat from './components/Chat.vue'
 // import NotFound from './components/Not.vue'
 // import Setting from './components/other/setting.vue'
@@ -12,7 +11,9 @@ import Chat from './components/Chat.vue'
 const router = createRouter({
 	history: createWebHistory(),
 	routes: [
-		{ path: '/', component: import('./components/Home.vue') },
+		// { path: '/', component: Home},
+		// { path: "/:id", component: import('./components/Chat.vue') },
+		{ path: '/', component: import('./components/Home.vue')},
 		{ path: "/login", component: import('./components/login.vue') },
 		{ path: "/inbox", component: import('./components/inbox.vue') },
 		{ path: "/:id", component: Chat },

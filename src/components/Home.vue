@@ -102,7 +102,7 @@
         <div class="p" data-aos="fade-left">page cord is just made for fun. its not for serious works. we recommande
           discord for that 💀</div>
         <div class="my-3">
-          <a href="/1" class="btn btn-outline-light mx-2 text-capitalize">open Page cord</a>
+          <a href="/login" class="btn btn-outline-light mx-2 text-capitalize">open Page cord</a>
           <button v-if="isChrome" @click="installPWA" class="pop2 btn btn-outline-light mx-2 text-capitalize">install Page
             cord<span style="margin: 40px 0px 0px -100px;" class="position-fixed tooltips2">Pwa</span></button>
         </div>

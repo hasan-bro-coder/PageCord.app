@@ -134,6 +134,6 @@ app.use(Vue3Sanitize,{
 
 // app.use()
 app.mount('body')
-if (typeof navigator.serviceWorker !== 'undefined') {
-//     navigator.serviceWorker.register('/other/sw.js')
-}
+// if (typeof navigator.serviceWorker !== 'undefined') {
+//     navigator.serviceWorker.register('/sw.js')
+// }

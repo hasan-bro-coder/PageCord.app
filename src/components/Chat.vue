@@ -72,6 +72,13 @@
 import Sidebar from "./other/sidebar.vue";
 // import { io } from "socket.io-client";
 import { store } from '../store'
+// let store2 = ""
+// await import('../store.js').then((el)=>{
+//   store = el.store
+//   console.log(el);
+// })
+// let store = import('../store.js').then(el => store = el.store)
+
 let parse = import("marked").then((el) => parse = el.parse);
 
 const supabase = store.supabase

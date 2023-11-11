@@ -1,10 +1,13 @@
 import { reactive } from 'vue'
-import { createClient } from "";
-let parse = import("@supabase/supabase-js").then((el) => parse = el.parse)
-const supabase = createClient(
-    import.meta.env.VITE_SUPA_URL,
-    import.meta.env.VITE_SUPA_PASS
-    );
+import { createClient } from "@supabase/supabase-js";
+// let supabase = ""
+// (async()=>{
+  // supabase = ""
+// })()
+// let createClient = import("@supabase/supabase-js").then(el=>createClient = el.createClient);
 export const store = reactive({
-  supabase: supabase
+      supabase: createClient(
+      import.meta.env.VITE_SUPA_URL,
+      import.meta.env.VITE_SUPA_PASS
+      )
 })

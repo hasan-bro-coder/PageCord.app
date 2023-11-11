@@ -2,8 +2,9 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './routes'
 import Vue3Sanitize from "vue-3-sanitize";
+import './registerServiceWorker'
 import('aos/dist/aos.css')
-import('bootstrap/dist/css/bootstrap.css');
+import 'bootstrap/dist/css/bootstrap.css';
 
 let app = createApp(App)
 app.use(router)

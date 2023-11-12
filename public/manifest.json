@@ -8,8 +8,51 @@
   "display": "fullscreen",
   "lang": "en",
   "orientation": "portrait",
+  "dir": "auto",
   "background_color": "#000000",
   "description": "Page cord is a discord clone made by a 12 yo student in bangladesh",
+  "categories": [
+    "games",
+    "social",
+    "productivity",
+    "news",
+    "photo",
+    "navigation",
+    "finance"
+  ],
+  "edge_side_panel": {
+    "preferred_width": 2
+  },
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.discord&hl=en&gl=US",
+      "id": "com.discord.app"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "1st",
+      "url": "/1",
+      "description": "first page",
+      "icons": [
+        {
+          "src": "windows11/Square44x44Logo.targetsize-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+    "share_target": {
+      "action": "/shared-content-receiver/",
+      "method": "GET",
+      "params": {
+        "title": "name",
+        "text": "description",
+        "url": "link"
+      }
+    },
   "icons": [
     {
       "src": "windows11/SmallTile.scale-100.png",
@@ -494,7 +537,8 @@
     "src": "other/screenshot.png",
     "sizes": "1360x649",
     "type": "image/png",
-    "platform": "wide"
+    "platform": "wide",
+    "purpose": "any"
   },
   {
     "src": "windows11/SplashScreen.scale-200.png",

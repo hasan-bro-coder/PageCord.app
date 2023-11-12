@@ -30,7 +30,7 @@
         <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link && c.user != you.name"
           @click="getImage(c.link_id,$events,c.type,false);$event.target.style.display = 'none'">load</button>
 
-        <div @click="shows(c.id, c.created_at)" class="setting position-absolute" v-if="c.user == you.name">
+        <div @click="shows(c.id, c.created_at)" class="setting position-absolute" v-if="c.user_id == you.token">
           <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link"
           @click.once="loadImg(c.link || false,c.link_id,$event,c.type,false);$event.target.style.display = 'none'">load</button>
           <button class="btn btns btn-outline-danger" style=" min-width: 60px !important;"
@@ -504,7 +504,7 @@ export default {
       // if (chat.length > 100) {
       let { data, error } = await supabase
         .from("chat")
-        .insert({ massage: msg, room_name: room, media: media, user: you.name, link: link, link_id: linktext,type: type})
+        .insert({ massage: msg, room_name: room, media: media, user_id: you.token ,user: you.name, link: link, link_id: linktext,type: type})
         .eq("room_name", room)
         .select();
     }

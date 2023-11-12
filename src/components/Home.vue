@@ -166,7 +166,7 @@ export default {
   const { dat, error } = await supabase
     .from('chat')
     .insert([
-      { room_name: val, massage:"the first massage" ,room_id: v4()},
+      { room_name: val, massage:"the first massage" ,},
     ])
     .select()
     if (error) {

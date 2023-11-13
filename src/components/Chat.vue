@@ -27,7 +27,7 @@
         <li @click.once="loadImg(c.link || false,c.link_id,$event,c.type,true)" style="height: max-content !important;overflow: auto !important;white-space: pre-warp"
           v-html="(c.img ? `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>` + c.massage : `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>` + $sanitize(mas(c.massage || '*empty massage*'))) || '*empty massage*'">
         </li>
-        <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link && c.user != you.name"
+        <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link && c.user_id == you.token"
           @click="getImage(c.link_id,$events,c.type,false);$event.target.style.display = 'none'">load</button>
 
         <div @click="shows(c.id, c.created_at)" class="setting position-absolute" v-if="c.user_id == you.token">
@@ -259,6 +259,7 @@ export default {
             data.forEach((el) => {
               let els = {
                 user: el.user,
+                user_id: you.user_id,
                 img: true,
                 id: el.id,
               created_at: el.created_at,
@@ -397,6 +398,7 @@ export default {
         let els = {
               img:isimg,
               user: you.name,
+              user_id: you.token,
               id: Math.random()+"ahh",
               created_at: `${new Date().getUTCFullYear()}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate() / 10 > 1 ? new Date().getUTCDate() : "0"+new Date().getUTCDate()}T${new Date().getUTCHours()}:${new Date().getUTCMinutes()}`,
               massage: msg
@@ -513,7 +515,7 @@ export default {
       let uid = v4()
       let { data, error } = await supabase
         .from("media")
-        .insert({ massage: msg, room_name: room, user: you.name, type: type, size: size, name: name, uuid: uid })
+        .insert({ massage: msg, room_name: room, user: you.name,user_id: you.token, type: type, size: size, name: name, uuid: uid })
         .eq("room_name", room)
         .select();
       if (error) {

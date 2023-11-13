@@ -27,7 +27,7 @@
         <li @click.once="loadImg(c.link || false,c.link_id,$event,c.type,true)" style="height: max-content !important;overflow: auto !important;white-space: pre-warp"
           v-html="(c.img ? `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>` + c.massage : `<p style='margin: 0px !important;padding: 0px !important; font-family: gg sans SemiBold Regular;font-size:20px'>${c.user || 'guy who doasnt exists'} :</p>` + $sanitize(mas(c.massage || '*empty massage*'))) || '*empty massage*'">
         </li>
-        <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link && c.user_id == you.token"
+        <button class="btn btns btn-outline-primary" style=" min-width: 60px !important;" v-if="c.link && c.user_id != you.token"
           @click="getImage(c.link_id,$events,c.type,false);$event.target.style.display = 'none'">load</button>
 
         <div @click="shows(c.id, c.created_at)" class="setting position-absolute" v-if="c.user_id == you.token">
@@ -86,7 +86,7 @@ let parse = import("marked").then((el) => parse = el.parse);
 const supabase = store.supabase
 let you = {
   name: localStorage.getItem("dname") || "unknown",
-  token: localStorage.getItem("token") ,
+  token: localStorage.getItem("token") 
 };
 let socket = {};
 

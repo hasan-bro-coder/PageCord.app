@@ -420,6 +420,9 @@ export default {
             "New massege from page: " + room + "\n \n",
             { body: "\n\n\n\n" + main, silent: true }
           );
+          if ('setAppBadge' in navigator) {
+              navigator.setAppBadge(1);
+          }
           document
             .getElementById("favicon")
             .setAttribute("href", "/other/new.png");
@@ -461,10 +464,10 @@ export default {
       document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "visible") {
           setTimeout(
-            () =>
+            () => {
               document
                 .getElementById("favicon")
-                .setAttribute("href", "/windows11/LargeTile.scale-400.png"),
+                .setAttribute("href", "/windows11/LargeTile.scale-400.png");navigator.clearAppBadge();},
             100
           );
         }

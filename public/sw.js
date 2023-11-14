@@ -43,11 +43,19 @@ self.addEventListener("offline",(events)=>{
 })
 
 self.addEventListener('sync', event => {
-  // if (event.tag === 'offlines') {
+  if (event.tag === 'offlines') {
       event.waitUntil(
         doTheWork()
         );
-  // }
+  }
+});
+self.addEventListener('periodicsync', event => {
+  if (event.tag === 'offlines') {
+  event.waitUntil(
+    doTheWork()
+    );
+  }
+  // Check for correct tag on the periodicSyncPermissionsync event.
 });
 self.addEventListener('install', event => {
   const files = [pageFallback,"/sw.js"];

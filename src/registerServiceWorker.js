@@ -8,8 +8,10 @@ register(`/sw.js`, {
         'For more details, visit https://goo.gl/AFskqB'
       )
     },
-    registered () {
+    async registered () {
       console.log('Service worker has been registered. bro')
+      const registration = await navigator.serviceWorker.ready;
+      await registration.sync.register('offlines')
     },
     cached () {
       console.log('Content has been cached for offline use.')

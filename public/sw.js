@@ -2,35 +2,55 @@ importScripts(
   'https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js'
 );
 
-const {setCatchHandler, setDefaultHandler} = workbox.routing;
+const {setCatchHandler, setDefaultHandler,registerRoute} = workbox.routing;
 const {NetworkOnly} = workbox.strategies;
 
 const pageFallback = 'offline.html';
-const imageFallback = false;
+const imageFallback = "./windows11/LargeTile.scale-400.png";
 const fontFallback = false;
  
 setDefaultHandler(new NetworkOnly());
 
-// self.addEventListener('push', (event) => {
-//   event.waitUntil(
-//     self.registration.showNotification('new notification for no reason', {
-//       body: 'idk why am i sending notification',
-//       icon: './android/android-launchericon-144-144.png',
-//     })
-//     );
-// });
-// self.addEventListener('notificationclick', (event) => {
-//   event.notification.close(); 
-//   var fullPath = self.location.origin + event.notification.data.path; 
-//   clients.openWindow(fullPath); 
-// });
+self.addEventListener('push', (event) => {
+  event.waitUntil(
+    self.registration.showNotification('new notification for no reason', {
+      icon: './android/android-launchericon-144-144.png',
+    })
+    );
+});
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close(); 
+  var fullPath = self.location.origin + event.notification.data.path; 
+  clients.openWindow(fullPath); 
+});
 // self.addEventListener('sync', event => {
 //   if (event.tag === 'database-sync') {
 //     event.waitUntil(console.log("syncing bro"))
 //   }
 // });
+function doTheWork(){
+  console.log("you got offline bro")
+  self.registration.showNotification('you got offline bro', {
+    body: 'idk why am i sending notification',
+    icon: './android/android-launchericon-144-144.png',
+  })
+  // let not = new Notification("you got offline bro")
+}
+
+self.addEventListener("offline",(events)=>{
+  console.log(events);
+  self.sync.register('offlines')
+})
+
+self.addEventListener('sync', event => {
+  // if (event.tag === 'offlines') {
+      event.waitUntil(
+        doTheWork()
+        );
+  // }
+});
 self.addEventListener('install', event => {
-  const files = [pageFallback];
+  const files = [pageFallback,"/sw.js"];
   if (imageFallback) {
     files.push(imageFallback);
   }

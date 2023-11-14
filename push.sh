@@ -1,7 +1,7 @@
 vercel && vercel --prod 
 git add .
 
-if [ $1 != '' ]; then
+if [ -z "$1" ]; then
     echo -e "\n\n commit $1 \n\n"
     git commit -m "$1"
   else

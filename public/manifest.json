@@ -27,7 +27,7 @@
   "related_applications": [
     {
       "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.discord&hl=en&gl=US",
+      "url": "https://play.google.com/store/apps/details?id=com.discord&amp;hl=en&amp;gl=US",
       "id": "com.discord.app"
     }
   ],
@@ -44,15 +44,15 @@
       ]
     }
   ],
-    "share_target": {
-      "action": "/shared-content-receiver/",
-      "method": "GET",
-      "params": {
-        "title": "name",
-        "text": "description",
-        "url": "link"
-      }
-    },
+  "share_target": {
+    "action": "/shared-content-receiver/",
+    "method": "GET",
+    "params": {
+      "title": "name",
+      "text": "description",
+      "url": "link"
+    }
+  },
   "icons": [
     {
       "src": "windows11/SmallTile.scale-100.png",
@@ -374,178 +374,179 @@
       "src": "windows11/Square44x44Logo.altform-lightunplated_targetsize-256.png",
       "sizes": "256x256",
       "purpose": "any"
-    },    
-  {
-    "src": "android/android-launchericon-192-192.png",
-    "sizes": "192x192",
-    "type": "image/png",
-    "purpose": "any"
-  },
-  {
-    "src": "android/android-launchericon-512-512.png",
-    "sizes": "512x512",
-    "purpose": "any"
-  },
-  {
-    "src": "android/android-launchericon-192-192.png",
-    "sizes": "192x192"
-  },
-  {
-    "src": "android/android-launchericon-144-144.png",
-    "sizes": "144x144"
-  },
-  {
-    "src": "android/android-launchericon-96-96.png",
-    "sizes": "96x96"
-  },
-  {
-    "src": "android/android-launchericon-72-72.png",
-    "sizes": "72x72"
-  },
-  {
-    "src": "android/android-launchericon-48-48.png",
-    "sizes": "48x48"
-  },
-  {
-    "src": "android/maskable_icon_x96.png",
-    "sizes": "96x96"
-  },
-  {
-    "src": "android/maskable_icon_x128.png",
-    "sizes": "128x128",
-    "type": "image/png"
-  },
-  {
-    "src": "android/maskable_icon.png",
-    "sizes": "418x418",
-    "type": "image/png",
-    "purpose": "maskable"
-  },
-  {
-    "src": "android/android-launchericon-512-512.png",
-    "sizes": "512x512",
-    "type": "image/png",
-    "purpose": "maskable"
-  },
-  {
-    "src": "ios/16.png",
-    "sizes": "16x16"
-  },
-  {
-    "src": "ios/20.png",
-    "sizes": "20x20"
-  },
-  {
-    "src": "ios/29.png",
-    "sizes": "29x29"
-  },
-  {
-    "src": "ios/32.png",
-    "sizes": "32x32"
-  },
-  {
-    "src": "ios/40.png",
-    "sizes": "40x40"
-  },
-  {
-    "src": "ios/50.png",
-    "sizes": "50x50"
-  },
-  {
-    "src": "ios/57.png",
-    "sizes": "57x57"
-  },
-  {
-    "src": "ios/58.png",
-    "sizes": "58x58"
-  },
-  {
-    "src": "ios/60.png",
-    "sizes": "60x60"
-  },
-  {
-    "src": "ios/64.png",
-    "sizes": "64x64"
-  },
-  {
-    "src": "ios/72.png",
-    "sizes": "72x72"
-  },
-  {
-    "src": "ios/76.png",
-    "sizes": "76x76"
-  },
-  {
-    "src": "ios/80.png",
-    "sizes": "80x80"
-  },
-  {
-    "src": "ios/87.png",
-    "sizes": "87x87"
-  },
-  {
-    "src": "ios/100.png",
-    "sizes": "100x100"
-  },
-  {
-    "src": "ios/114.png",
-    "sizes": "114x114"
-  },
-  {
-    "src": "ios/120.png",
-    "sizes": "120x120"
-  },
-  {
-    "src": "ios/128.png",
-    "sizes": "128x128"
-  },
-  {
-    "src": "ios/144.png",
-    "sizes": "144x144"
-  },
-  {
-    "src": "ios/152.png",
-    "sizes": "152x152"
-  },
-  {
-    "src": "ios/167.png",
-    "sizes": "167x167"
-  },
-  {
-    "src": "ios/180.png",
-    "sizes": "180x180"
-  },
-  {
-    "src": "ios/192.png",
-    "sizes": "192x192"
-  },
-  {
-    "src": "ios/256.png",
-    "sizes": "256x256"
-  },
-  {
-    "src": "ios/512.png",
-    "sizes": "512x512"
-  },
-  {
-    "src": "ios/1024.png",
-    "sizes": "1024x1024"
-  }
-],
-"screenshots": [
-  {
-    "src": "other/screenshot.png",
-    "sizes": "1360x649",
-    "type": "image/png",
-    "platform": "wide",
-    "purpose": "any"
-  },
-  {
-    "src": "windows11/SplashScreen.scale-200.png",
-    "sizes": "1240x600",
-    "type": "image/png",
-    "platform": "wide",
-    "form_factor": "wide"
-  }
-]
+    },
+    {
+      "src": "android/android-launchericon-192-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "android/android-launchericon-512-512.png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "android/android-launchericon-192-192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "android/android-launchericon-144-144.png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "android/android-launchericon-96-96.png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "android/android-launchericon-72-72.png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "android/android-launchericon-48-48.png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "android/maskable_icon_x96.png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "android/maskable_icon_x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "android/maskable_icon.png",
+      "sizes": "418x418",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "android/android-launchericon-512-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "ios/16.png",
+      "sizes": "16x16"
+    },
+    {
+      "src": "ios/20.png",
+      "sizes": "20x20"
+    },
+    {
+      "src": "ios/29.png",
+      "sizes": "29x29"
+    },
+    {
+      "src": "ios/32.png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "ios/40.png",
+      "sizes": "40x40"
+    },
+    {
+      "src": "ios/50.png",
+      "sizes": "50x50"
+    },
+    {
+      "src": "ios/57.png",
+      "sizes": "57x57"
+    },
+    {
+      "src": "ios/58.png",
+      "sizes": "58x58"
+    },
+    {
+      "src": "ios/60.png",
+      "sizes": "60x60"
+    },
+    {
+      "src": "ios/64.png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "ios/72.png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "ios/76.png",
+      "sizes": "76x76"
+    },
+    {
+      "src": "ios/80.png",
+      "sizes": "80x80"
+    },
+    {
+      "src": "ios/87.png",
+      "sizes": "87x87"
+    },
+    {
+      "src": "ios/100.png",
+      "sizes": "100x100"
+    },
+    {
+      "src": "ios/114.png",
+      "sizes": "114x114"
+    },
+    {
+      "src": "ios/120.png",
+      "sizes": "120x120"
+    },
+    {
+      "src": "ios/128.png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "ios/144.png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "ios/152.png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "ios/167.png",
+      "sizes": "167x167"
+    },
+    {
+      "src": "ios/180.png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "ios/192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "ios/256.png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "ios/512.png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "ios/1024.png",
+      "sizes": "1024x1024"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "other/screenshot.png",
+      "sizes": "1360x649",
+      "type": "image/png",
+      "platform": "wide",
+      "purpose": "any"
+    },
+    {
+      "src": "windows11/SplashScreen.scale-200.png",
+      "sizes": "1240x600",
+      "type": "image/png",
+      "platform": "wide",
+      "form_factor": "wide"
+    }
+  ],
+  "iarc_rating_id": "10"
 }

@@ -548,5 +548,11 @@
       "form_factor": "wide"
     }
   ],
-  "iarc_rating_id": "10"
+  "display_override": [
+    "fullscreen",
+    "standalone",
+    "browser",
+    "window-controls-overlay",
+    "minimal-ui"
+  ]
 }
